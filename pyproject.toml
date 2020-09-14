@@ -1,0 +1,54 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "yaqd_wright"
+dist-name = "yaqd-wright"
+author = "Wright Group"
+author-email = "git@ksunden.space"
+home-page = "https://yaq.fyi"
+description-file = "README.md"
+requires-python = ">=3.7"
+requires = ["yaqd-core>=2020.06.3"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Topic :: Scientific/Engineering",
+]
+
+[tool.flit.metadata.urls]
+Source = "https://gitlab.com/yaq/yaqd-wright"
+Issues = "https://gitlab.com/yaq/yaqd-wright/issues"
+
+[tool.flit.metadata.requires-extra]
+dev = ["black", "pre-commit"]
+
+[tool.flit.scripts]
+yaqd-wright-aerotech = "yaqd_wright._wright_aerotech:WrightAerotech.main"
+yaqd-wright-continuous-filter-wheel = "yaqd_wright._wright_continuous_filter_wheel:WrightContinuousFilterWheel.main"
+yaqd-wright-wl-motor = "yaqd_wright._wright_wl_motor:WrightWlMotor.main"
+
+
+[tool.black]
+line-length = 99
+target-version = ['py37', 'py38']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | build
+  | dist
+)/
+'''

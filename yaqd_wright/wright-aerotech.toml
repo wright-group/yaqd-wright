@@ -1,0 +1,17 @@
+protocol = "wright-aerotech"
+doc = ""
+traits = ["is-daemon", "has-limits", "uses-uart"]
+
+[links]
+source = "https://github.com/wright-group/yaqd-wright"
+bugtracker = "https://github.com/wright-group/yaqd-wright/issues"
+
+[installation]
+PyPI = "https://pypi.org/project/yaqd-wright"
+
+[config]
+
+[state]
+
+[messages]
+
