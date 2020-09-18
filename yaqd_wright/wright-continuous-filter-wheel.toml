@@ -1,5 +1,7 @@
 protocol = "wright-continuous-filter-wheel"
-doc = ""
+doc = """
+Expose a filter wheel as a yaq daemon.
+"""
 traits = ["is-daemon", "has-limits", "uses-uart"]
 
 [links]
@@ -10,8 +12,29 @@ bugtracker = "https://github.com/wright-group/yaqd-wright/issues"
 PyPI = "https://pypi.org/project/yaqd-wright"
 
 [config]
+motor.type = "int"
+motor.default = 1
+motor.doc = "Index for filter wheel motor" I'm not confident this is right...
+
+serial_port.type = "string"
+serial_port.default = "COM6" not actually sure about this...
+serial_port.doc = "Serial port that provides communication between filter wheel motor and computer"
+
+baud_rate.type = "int"
+baud_rate.default = 57600
+baud_rate.doc = "Communication speed of serial port"
+
+units.type = "float"
+units.default = "deg"
+units.doc = "Units of angle the filter wheel uses"
+
+microstep.type = "int"
+microstep.default = "1"
+microstep.doc = "Increases angle resolution of filter wheel; valid integers are 1, 2, 4, 8, 16, 32"
 
 [state]
+Fault?
+Ready?
+Busy?
 
 [messages]
-
