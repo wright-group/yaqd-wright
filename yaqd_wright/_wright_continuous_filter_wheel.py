@@ -1,29 +1,54 @@
 __all__ = ["WrightContinuousFilterWheel"]
 
 import asyncio
-from typing import Dict, Any, List
-
-from yaqd_core import ContinuousHardware
-
+import time
+from yaqd_core import ContinuousHardware, aserial
 
 class WrightContinuousFilterWheel(ContinuousHardware):
     _kind = "wright-continuous-filter-wheel"
 
     def __init__(self, name, config, config_filepath):
         super().__init__(name, config, config_filepath)
-        # Perform any unique initialization
+        self._motornum=config["motor"]
+        self._serial_port = aserial.ASerial(config["serial_port"], config["baud_rate"])
+        self._units=config["units"]
+        self._microstep=config["microstep"]
+        self._set_microstep(self._microstep)
+        time.sleep(0.2)
+        self._steps_per_rotation=400
 
     def _set_position(self, position):
-        ...
+        step_position=round(self._microstep*(position-self._state["position"])*self._steps_per_rotation/360)
+        self._serial_port.write(f"M {self._motornum} {step_position}\n".encode())
+        self._state["position"]=position
+
+    def direct_serial_write(self, message):
+        self._busy = True
+        self._serial_port.write(message)
+
+    def home(self):
+        loop = asyncio.get_event_loop()
+        loop.create_task(self._home())
+    
+    async def _home(self):
+        self._busy = True
+        self._serial_port.write(f"H {self._motornum}\n".encode())
+        await self._not_busy_sig.wait()
+        self._state["position"]=0
+        self.set_position(self._state["destination"])
+    
+    def _set_microstep(self, microint):
+        self._busy = True
+        if microint in [2**i for i in range(0,6)]:
+            self._serial_port.write(f"U {microint}\n".encode())
+            self._microstep=microint
+        else: raise ValueError("microint must be a power of 2 (e.g. 1, 2,... 32)")
 
     async def update_state(self):
-        """Continually monitor and update the current daemon state."""
-        # If there is no state to monitor continuously, delete this function
         while True:
-            # Perform any updates to internal state
-            self._busy = False
-            # There must be at least one `await` in this loop
-            # This one waits for something to trigger the "busy" state
-            # (Setting `self._busy = True)
-            # Otherwise, you can simply `await asyncio.sleep(0.01)`
-            await self._busy_sig.wait()
+            self._serial_port.write(f"Q {self._motornum}\n".encode())
+            line = await self._serial_port.areadline()
+            self._busy = (line[0:1] != b"R")
+            await asyncio.sleep(0.2)
+            if self._busy:
+                pass
