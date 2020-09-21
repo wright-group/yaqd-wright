@@ -25,22 +25,3 @@ units.doc = "Units of angle the filter wheel uses to set position"
 microstep.type = "int"
 microstep.default = 1
 microstep.doc = "Increases angle resolution of filter wheel; valid integers are 1, 2, 4, 8, 16, 32"
-
-[state]
-motor.type = "int"
-motor.default = 1
-motor.doc = "Index for filter wheel motor"
-
-baud_rate.default = 57600
-
-units.type = "string"
-units.default = "deg"
-units.doc = "Units of angle the filter wheel uses"
-
-microstep.type = "int"
-microstep.default = 1
-microstep.doc = "Increases angle resolution of filter wheel; valid integers are 1, 2, 4, 8, 16, 32"
-
-[messages._set_position]
-request = [{"name"="set filter wheel position", "type"="int"}]
-doc = "Set position of filter wheel in degrees"
