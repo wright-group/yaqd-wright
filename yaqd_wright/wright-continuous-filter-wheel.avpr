@@ -134,6 +134,11 @@
                 "string"
             ]
         },
+        "home": {
+            "doc": "Initiates the homing procedure.\nThe daemon will report as busy during the homing procedure.\n After the homing procedure is complete, the daemon will return to the current destination.\n",
+            "request": [],
+            "response": "null"
+        },
         "id": {
             "doc": "JSON object with information to identify the daemon, including name, kind, make, model, serial.\n",
             "request": [],
@@ -207,13 +212,14 @@
             "type": "float"
         }
     },
-    "trait": "uses-serial",
+    "trait": "has-position",
     "traits": [
         "has-position",
-        "uses-uart",
-        "has-limits",
+        "is-homeable",
         "is-daemon",
-        "uses-serial"
+        "has-limits",
+        "uses-serial",
+        "uses-uart"
     ],
     "types": [
         {

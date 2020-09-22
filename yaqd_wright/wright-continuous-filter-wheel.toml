@@ -2,7 +2,7 @@ protocol = "wright-continuous-filter-wheel"
 doc = """
 Expose a filter wheel as a yaq daemon.
 """
-traits = ["is-daemon", "has-limits", "uses-uart"]
+traits = ["is-daemon", "has-limits", "uses-uart", "is-homeable"]
 
 [links]
 source = "https://github.com/wright-group/yaqd-wright"
