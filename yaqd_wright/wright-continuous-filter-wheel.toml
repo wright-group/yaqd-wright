@@ -1,6 +1,8 @@
 protocol = "wright-continuous-filter-wheel"
-doc = ""
-traits = ["is-daemon", "has-limits", "uses-uart"]
+doc = """
+Expose a filter wheel as a yaq daemon.
+"""
+traits = ["is-daemon", "has-limits", "uses-uart", "is-homeable"]
 
 [links]
 source = "https://github.com/wright-group/yaqd-wright"
@@ -10,8 +12,16 @@ bugtracker = "https://github.com/wright-group/yaqd-wright/issues"
 PyPI = "https://pypi.org/project/yaqd-wright"
 
 [config]
+motor.type = "int"
+motor.default = 1
+motor.doc = "Index for filter wheel motor"
 
-[state]
+baud_rate.default = 57600
 
-[messages]
+units.type = "string"
+units.default = "deg"
+units.doc = "Units of angle the filter wheel uses to set position"
 
+microstep.type = "int"
+microstep.default = 1
+microstep.doc = "Increases angle resolution of filter wheel; valid integers are 1, 2, 4, 8, 16, 32"
