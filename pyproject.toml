@@ -31,7 +31,7 @@ dev = ["black", "pre-commit"]
 
 [tool.flit.scripts]
 yaqd-wright-aerotech = "yaqd_wright._wright_aerotech:WrightAerotech.main"
-yaqd-wright-continuous-filter-wheel = "yaqd_wright._wright_continuous_filter_wheel:WrightContinuousFilterWheel.main"
+yaqd-wright-filter-wheel = "yaqd_wright._wright_filter_wheel:WrightFilterWheel.main"
 yaqd-wright-wl-motor = "yaqd_wright._wright_wl_motor:WrightWlMotor.main"
 
 
