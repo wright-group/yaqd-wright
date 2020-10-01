@@ -1,9 +1,8 @@
 __all__ = ["WrightAerotech"]
 
 import asyncio
-from typing import Dict, Any, List
 
-from yaqd_core import ContinuousHardware
+from yaqd_core import ContinuousHardware, aserial
 
 
 class WrightAerotech(ContinuousHardware):
@@ -11,19 +10,39 @@ class WrightAerotech(ContinuousHardware):
 
     def __init__(self, name, config, config_filepath):
         super().__init__(name, config, config_filepath)
+        self._serial_port = aserial.ASerial(config["serial_port"], config["baud_rate"])
         # Perform any unique initialization
 
+
+
     def _set_position(self, position):
-        ...
+        self._serial_port.write(f"M {position}\n".encode())
+        
+    def close(self):
+        self._serial_port.close()
+        
+    def direct_serial_write(self, message):
+        self._busy = True
+        self._serial_port.write(message.encode())
+        
+    async def _home(self):
+        self._busy = True
+        # Initiate the home
+        self._serial_port.write(b"H\n")
+        await self._not_busy_sig.wait()
+        self.set_position(self._state["destination"])
+    
 
     async def update_state(self):
         """Continually monitor and update the current daemon state."""
         # If there is no state to monitor continuously, delete this function
         while True:
             # Perform any updates to internal state
-            self._busy = False
-            # There must be at least one `await` in this loop
-            # This one waits for something to trigger the "busy" state
-            # (Setting `self._busy = True)
-            # Otherwise, you can simply `await asyncio.sleep(0.01)`
-            await self._busy_sig.wait()
+            self._serial_port.write(b"Q\n")
+            line = await self._serial_port.areadline()
+            self._busy = (line[0:1] != b"R")
+            # self.logger.debug(line[0:1])
+            self._serial_port.write(b"G\n")
+            self._state["position"] = float(await self._serial_port.areadline())
+            if self._busy:
+                await asyncio.sleep(0.1)
