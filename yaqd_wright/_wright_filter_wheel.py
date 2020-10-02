@@ -49,14 +49,13 @@ class WrightFilterWheel(ContinuousHardware, DiscreteHardware):
             self._serial_port.write(f"Q {self._motornum}\n".encode())
             line = await self._serial_port.areadline()
             self._busy = (line[0:1] != b"R")
+            self.logger.debug(f"{self._busy=}")
             await asyncio.sleep(0.2)
             if self._busy:
-                pass
+                self._state["position_identifier"] = None
             else:
                 k1=None
-                for k,v in self._state["position_identifier"]:
-                    self.logger.debug(self._state["position"])
-                    self.logger.debug(v)
+                for k,v in self._position_identifiers.items():
                     if round(self._state["position"]) == round(v):
                         k1 = k
                 self._state["position_identifier"]=k1
