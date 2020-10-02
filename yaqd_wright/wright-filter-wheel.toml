@@ -1,8 +1,8 @@
-protocol = "wright-continuous-filter-wheel"
+protocol = "wright-filter-wheel"
 doc = """
 Expose a filter wheel as a yaq daemon.
 """
-traits = ["is-daemon", "has-limits", "uses-uart", "is-homeable"]
+traits = ["is-daemon", "has-limits", "uses-uart", "is-homeable", "is-discrete"]
 
 [links]
 source = "https://github.com/wright-group/yaqd-wright"
@@ -13,7 +13,7 @@ PyPI = "https://pypi.org/project/yaqd-wright"
 
 [config]
 motor.type = "int"
-motor.default = 1
+motor.default = 0
 motor.doc = "Index for filter wheel motor"
 
 baud_rate.default = 57600

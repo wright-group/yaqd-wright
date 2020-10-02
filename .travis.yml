@@ -27,8 +27,8 @@ jobs:
      script:
             - yaqd-wright-wl-motor --version
             - yaqd-wright-wl-motor -h
-            - yaqd-wright-continuous-filter-wheel --version
-            - yaqd-wright-continuous-filter-wheel -h
+            - yaqd-wright-filter-wheel --version
+            - yaqd-wright-filter-wheel -h
             - yaqd-wright-aerotech --version
             - yaqd-wright-aerotech -h
    - stage: test

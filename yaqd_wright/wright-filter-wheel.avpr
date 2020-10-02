@@ -4,6 +4,14 @@
             "default": 57600,
             "type": "int"
         },
+        "identifiers": {
+            "default": {},
+            "doc": "Position identifiers",
+            "type": {
+                "type": "map",
+                "values": "float"
+            }
+        },
         "limits": {
             "default": [
                 -Infinity,
@@ -33,7 +41,7 @@
             ]
         },
         "motor": {
-            "default": 1,
+            "default": 0,
             "doc": "Index for filter wheel motor",
             "type": "int"
         },
@@ -108,6 +116,14 @@
             "request": [],
             "response": "float"
         },
+        "get_identifier": {
+            "doc": "Get current identifier string. Current identifier may be None.",
+            "request": [],
+            "response": [
+                "null",
+                "string"
+            ]
+        },
         "get_limits": {
             "doc": "Get daemon limits.Limits will be the <a href='https://en.wikipedia.org/wiki/Intersection_(set_theory)'>intersection</a> of config limits and driver limits (when appliciable).",
             "request": [],
@@ -120,6 +136,14 @@
             "doc": "Get current daemon position.",
             "request": [],
             "response": "float"
+        },
+        "get_position_identifiers": {
+            "doc": "Get position identifiers. Identifiers may not change at runtime.",
+            "request": [],
+            "response": {
+                "type": "map",
+                "values": "float"
+            }
         },
         "get_state": {
             "doc": "Get version of the running daemon",
@@ -160,6 +184,16 @@
             ],
             "response": "boolean"
         },
+        "set_identifier": {
+            "doc": "Set using an identifier. Returns new destination.",
+            "request": [
+                {
+                    "name": "identifier",
+                    "type": "string"
+                }
+            ],
+            "response": "float"
+        },
         "set_position": {
             "doc": "Give the daemon a new destination, and begin motion towards that destination.",
             "request": [
@@ -192,7 +226,7 @@
             "response": "null"
         }
     },
-    "protocol": "wright-continuous-filter-wheel",
+    "protocol": "wright-filter-wheel",
     "requires": [],
     "state": {
         "destination": {
@@ -210,16 +244,25 @@
         "position": {
             "default": NaN,
             "type": "float"
+        },
+        "position_identifier": {
+            "default": null,
+            "doc": "Current position identifier.",
+            "type": [
+                "null",
+                "string"
+            ]
         }
     },
     "trait": "has-position",
     "traits": [
+        "is-discrete",
         "has-position",
+        "uses-uart",
         "is-homeable",
-        "is-daemon",
-        "has-limits",
         "uses-serial",
-        "uses-uart"
+        "is-daemon",
+        "has-limits"
     ],
     "types": [
         {
