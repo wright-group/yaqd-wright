@@ -1,21 +1,31 @@
 __all__ = ["WrightFilterWheel"]
 
 import asyncio
+from typing import Dict
 import time
+
 from yaqd_core import ContinuousHardware, DiscreteHardware, aserial
+from ._serial import SerialDispatcher
 
 class WrightFilterWheel(ContinuousHardware, DiscreteHardware):
     _kind = "wright-filter-wheel"
+    serial_dispatchers: Dict[str, SerialDispatcher] = {}
 
     def __init__(self, name, config, config_filepath):
         super().__init__(name, config, config_filepath)
         self._motornum=config["motor"]
-        self._serial_port = aserial.ASerial(config["serial_port"], config["baud_rate"])
         self._units=config["units"]
         self._microstep=config["microstep"]
         self._set_microstep(self._microstep)
         time.sleep(0.2)
         self._steps_per_rotation=400
+        if config["serial_port"] in WrightFilterWheel.serial_dispatchers:
+            self._serial_port = WrightFilterWheel.serial_dispatchers[config["serial_port"]]
+        else:
+            self._serial_port = SerialDispatcher(
+                aserial.ASerial(config["serial_port"], config["baud_rate"], timeout=0, rtscts=True)
+                )
+            WrightFilterWheel.serial_dispatchers[config["serial_port"]] = self._serial_port
 
     def _set_position(self, position):
         step_position=round(self._microstep*(position-self._state["position"])*self._steps_per_rotation/360)
@@ -47,7 +57,7 @@ class WrightFilterWheel(ContinuousHardware, DiscreteHardware):
     async def update_state(self):
         while True:
             self._serial_port.write(f"Q {self._motornum}\n".encode())
-            line = await self._serial_port.areadline()
+            line = await self._serial_port.awritethenreadline()
             self._busy = (line[0:1] != b"R")
             self.logger.debug(f"{self._busy=}")
             await asyncio.sleep(0.2)
