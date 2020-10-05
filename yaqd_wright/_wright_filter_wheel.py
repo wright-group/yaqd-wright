@@ -15,14 +15,13 @@ class WrightFilterWheel(ContinuousHardware, DiscreteHardware):
         self._motornum=config["motor"]
         self._units=config["units"]
         self._microstep=config["microstep"]
-        self._set_microstep(self._microstep)
-        time.sleep(0.2)
         self._steps_per_rotation=400
         if config["serial_port"] in WrightFilterWheel.serial_dispatchers:
             self._serial_port = WrightFilterWheel.serial_dispatchers[config["serial_port"]]
         else:
-            self._serial_port = aserial.ASerial(config["serial_port"], config["baud_rate"], timeout=0, rtscts=True)
+            self._serial_port = aserial.ASerial(config["serial_port"], config["baud_rate"])
             WrightFilterWheel.serial_dispatchers[config["serial_port"]] = self._serial_port
+        self._set_microstep(self._microstep)
 
     def _set_position(self, position):
         step_position=round(self._microstep*(position-self._state["position"])*self._steps_per_rotation/360)
