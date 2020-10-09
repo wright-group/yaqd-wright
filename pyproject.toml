@@ -23,8 +23,8 @@ classifiers = [
 ]
 
 [tool.flit.metadata.urls]
-Source = "https://gitlab.com/yaq/yaqd-wright"
-Issues = "https://gitlab.com/yaq/yaqd-wright/issues"
+Source = "https://github.com/wright-group/yaqd-wright"
+Issues = "https://github.com/wright-group/yaqd-wright/issues"
 
 [tool.flit.metadata.requires-extra]
 dev = ["black", "pre-commit"]
