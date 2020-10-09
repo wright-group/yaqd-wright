@@ -1,0 +1,55 @@
+protocol = "wright-ingaas"
+doc = ""
+traits = ["is-daemon", "is-sensor", "has-measure-trigger", "uses-uart"]
+
+[links]
+source = "https://github.com/wright-group/yaqd-wright"
+bugtracker = "https://github.com/wright-group/yaqd-wright/issues"
+
+[installation]
+PyPI = "https://pypi.org/project/yaqd-wright"
+
+[config]
+
+[config.inclusion_angle]
+type = "float"
+default = 24.0
+doc = "Spectrometer inclusion angle (degrees)."
+
+[config.focal_length]
+type = "float"
+default = 140.0
+doc = "Spectrometer focal length (mm)."
+
+[config.focal_length_tilt]
+type = "float"
+default = 0.0
+doc = "Spectrometer focal length tilt (degrees)."
+
+[config.grooves_per_mm]
+type = "float"
+default = 150.0
+doc = "Spectrometer grating grooves per mm."
+
+[config.order]
+type = "int"
+default = 1
+doc = "Spectrometer order of defraction."
+
+[config.calibration_pixel]
+type = "int"
+default = 100
+doc = "Pixel that spectrometer setpoint appears at."
+
+[config.spectra_averaged]
+type = "int"
+doc = "Number of spectra to average."
+
+[state]
+
+[messages]
+
+[messages.get_map]
+request = [{name="mono_setpoint", type="float"}]
+response = "ndarray"
+doc = "Get color at each pixel, in nanometers. Must give mono setpoint in nanometers."
