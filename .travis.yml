@@ -31,8 +31,8 @@ jobs:
             - yaqd-wright-filter-wheel -h
             - yaqd-wright-aerotech --version
             - yaqd-wright-aerotech -h
-	    - yaqd-wright-ingaas --version
-	    - yaqd-wright-ingaas -h
+            - yaqd-wright-ingaas --version
+            - yaqd-wright-ingaas -h
    - stage: test
      name: traits
      script: for i in yaqd_wright/*.avpr; do yaq-traits check $i; done
