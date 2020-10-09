@@ -1,5 +1,5 @@
-import numpy as np
-import serial
+import numpy as np  # type: ignore
+import serial  # type: ignore
 import asyncio
 
 from yaqd_core import Sensor
@@ -17,10 +17,10 @@ class WrightInGaAs(Sensor):
         self._ser.baudrate = self._config["baud_rate"]  # must be 57600
         self._ser.port = self._config["serial_port"]
         self._ser.open()
-        
+
     def get_map(self, mono_setpoint):
         """Get map.
-        
+
         Paramters
         ---------
         mono_setpoint : number
@@ -64,7 +64,7 @@ class WrightInGaAs(Sensor):
             pixels = 0.00195 * (raw_pixels[::-1] - (2060.0 + -0.0142 * np.arange(256)))
             out += pixels / self._config["spectra_averaged"]
         return {"ingaas": out}
-        
+
     def _read(self):
         # handle communication with special end of line 'ready'
         eol = r"ready".encode()
