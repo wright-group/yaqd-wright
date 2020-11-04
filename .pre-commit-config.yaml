@@ -16,5 +16,12 @@ repos:
     hooks:
         - id: yaq-traits-check
 
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+      - id: trailing-whitespace
+      - id: no-commit-to-branch
+        args: [-b master]
+
 default_language_version:
   python: python3
