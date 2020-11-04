@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed
+- rerendered avprs based on recent traits change
+
 ## [2020.10.1]
 
 ### Added
