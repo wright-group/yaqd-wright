@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ### Fixed
 - rerendered avprs based on recent traits change
 
+### Changed
+- use new parent classes from upstream core
+
 ## [2020.10.1]
 
 ### Added
