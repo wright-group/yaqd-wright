@@ -2,10 +2,10 @@ import numpy as np  # type: ignore
 import serial  # type: ignore
 import asyncio
 
-from yaqd_core import Sensor
+from yaqd_core import UsesUart, Sensor
 
 
-class WrightInGaAs(Sensor):
+class WrightInGaAs(UsesUart, Sensor):
     _kind = "wright-ingaas"
 
     def __init__(self, name, config, config_filepath):
@@ -56,6 +56,7 @@ class WrightInGaAs(Sensor):
     async def _measure(self):
         out = np.zeros((256,))
         for _ in range(self._config["spectra_averaged"]):
+            self._ser.reset_input_buffer()
             self._ser.write("S".encode())
             raw_string = self._read()
             # transform to floats
@@ -79,3 +80,7 @@ class WrightInGaAs(Sensor):
                 break
         self._ser.flush()
         return line[:512]
+
+    def direct_serial_write(self, data):
+        self._busy = True
+        self._ser.write(data)
