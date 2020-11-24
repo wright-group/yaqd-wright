@@ -79,7 +79,7 @@ class WrightInGaAs(UsesUart, Sensor):
             else:
                 break
         self._ser.flush()
-        return line[:512]
+        return line[-517:-5]
 
     def direct_serial_write(self, data):
         self._busy = True
