@@ -2,10 +2,10 @@ import numpy as np  # type: ignore
 import serial  # type: ignore
 import asyncio
 
-from yaqd_core import UsesUart, Sensor
+from yaqd_core import UsesUart, HasMeasureTrigger, IsSensor
 
 
-class WrightInGaAs(UsesUart, Sensor):
+class WrightInGaAs(UsesUart, HasMeasureTrigger, IsSensor):
     _kind = "wright-ingaas"
 
     def __init__(self, name, config, config_filepath):

@@ -4,10 +4,10 @@ import asyncio
 from typing import Dict
 import time
 
-from yaqd_core import ContinuousHardware, DiscreteHardware, aserial
+from yaqd_core import IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart, UsesSerial, aserial
 
 
-class WrightFilterWheel(ContinuousHardware, DiscreteHardware):
+class WrightFilterWheel(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart, UsesSerial):
     _kind = "wright-filter-wheel"
     serial_dispatchers: Dict[str, aserial.ASerial] = {}
 
