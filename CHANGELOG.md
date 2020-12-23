@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+- conda-forge as installation source
+
 ### Fixed
 - rerendered avprs based on recent traits change
 - avoid byte order problems in the InGaAs array

@@ -88,7 +88,8 @@
     },
     "doc": "Expose a filter wheel as a yaq daemon.\n",
     "installation": {
-        "PyPI": "https://pypi.org/project/yaqd-wright"
+        "PyPI": "https://pypi.org/project/yaqd-wright",
+        "conda-forge": "https://anaconda.org/conda-forge/yaqd-wright"
     },
     "links": {
         "bugtracker": "https://github.com/wright-group/yaqd-wright/issues",
@@ -286,13 +287,13 @@
         }
     },
     "traits": [
-        "uses-serial",
-        "has-position",
-        "has-limits",
-        "is-daemon",
-        "is-homeable",
         "is-discrete",
-        "uses-uart"
+        "is-homeable",
+        "has-limits",
+        "uses-serial",
+        "is-daemon",
+        "uses-uart",
+        "has-position"
     ],
     "types": [
         {

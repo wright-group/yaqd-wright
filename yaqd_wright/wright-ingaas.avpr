@@ -81,7 +81,8 @@
     },
     "doc": "",
     "installation": {
-        "PyPI": "https://pypi.org/project/yaqd-wright"
+        "PyPI": "https://pypi.org/project/yaqd-wright",
+        "conda-forge": "https://anaconda.org/conda-forge/yaqd-wright"
     },
     "links": {
         "bugtracker": "https://github.com/wright-group/yaqd-wright/issues",
@@ -225,10 +226,10 @@
     "requires": [],
     "state": {},
     "traits": [
-        "is-daemon",
-        "uses-serial",
-        "has-measure-trigger",
         "is-sensor",
+        "has-measure-trigger",
+        "uses-serial",
+        "is-daemon",
         "uses-uart"
     ],
     "types": [
