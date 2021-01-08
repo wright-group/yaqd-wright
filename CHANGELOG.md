@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [2021.1.0]
+
 ### Added
 - conda-forge as installation source
 
@@ -28,6 +30,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/wright-group/yaqd-wright/compare/v2020.10.1...HEAD
+[Unreleased]: https://github.com/wright-group/yaqd-wright/compare/v2021.1.0...HEAD
+[2021.1.0]: https://github.com/wright-group/yaqd-wright/compare/v2020.10.1...v2021.1.0
 [2020.10.1]: https://github.com/wright-group/yaqd-wright/compare/v2020.10.0...v2020.10.1
 [2020.10.0]: https://github.com/wright-group/yaqd-wright/releases/tag/v2020.10.0
