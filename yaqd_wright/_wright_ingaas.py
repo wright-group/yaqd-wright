@@ -13,12 +13,19 @@ class WrightInGaAs(UsesUart, HasMeasureTrigger, IsSensor):
         self._channel_names = ["ingaas"]
         self._channel_units = {"ingaas": None}
         self._channel_shapes = {"ingaas": (256,)}
+        self.spec_setpoint = self._config["spectrometer_setpoint"]
+        if isinstance(self.spec_setpoint, str):
+            host, port = self.spec_setpoint.split(":")
+            import yaqc
+            self._spec_client = yaqc.Client(port, host=host)
+        else:
+            self._spec_client = None
         self._ser = serial.Serial()
         self._ser.baudrate = self._config["baud_rate"]  # must be 57600
         self._ser.port = self._config["serial_port"]
         self._ser.open()
 
-    def get_map(self, mono_setpoint):
+    def get_map(self):
         """Get map.
 
         Paramters
@@ -34,7 +41,7 @@ class WrightInGaAs(UsesUart, HasMeasureTrigger, IsSensor):
         i_pixel = np.arange(256)  # 256 pixels
         # calculate terms
         x = np.arcsin(
-            (1e-6 * self._config["order"] * self._config["grooves_per_mm"] * mono_setpoint)
+            (1e-6 * self._config["order"] * self._config["grooves_per_mm"] * self._spec_setpoint)
             / (2 * np.cos(spec_inclusion_angle_rad / 2.0))
         )
         A = np.sin(x - spec_inclusion_angle_rad / 2)
@@ -81,6 +88,19 @@ class WrightInGaAs(UsesUart, HasMeasureTrigger, IsSensor):
         self._ser.flush()
         return line[-517:-5]
 
+
     def direct_serial_write(self, data):
         self._busy = True
         self._ser.write(data)
+
+
+    @property
+    def _spec_setpoint(self):
+        if self._spec_client is None:
+            return self.spec_setpoint
+        else:
+            units = self._spec_client.get_units()
+            # ddk: need to be more robust in the future...
+            assert units == "nm"
+            setpoint = self._spec_client.get_position()
+            return setpoint
