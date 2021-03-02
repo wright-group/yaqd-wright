@@ -84,7 +84,7 @@
         },
         "order": {
             "default": 1,
-            "doc": "Spectrometer order of defraction.",
+            "doc": "Spectrometer order of diffraction.",
             "type": "int"
         },
         "port": {
@@ -108,6 +108,13 @@
         "spectra_averaged": {
             "doc": "Number of spectra to average.",
             "type": "int"
+        },
+        "spectrometer_setpoint": {
+            "doc": "Spectrometer central wavelength (in nm).  Can also poll `has-position` daemon for position by providing string of format 'host:port'.",
+            "type": [
+                "float",
+                "string"
+            ]
         }
     },
     "doc": "",
@@ -183,13 +190,8 @@
             "response": "string"
         },
         "get_map": {
-            "doc": "Get color at each pixel, in nanometers. Must give mono setpoint in nanometers.",
-            "request": [
-                {
-                    "name": "mono_setpoint",
-                    "type": "float"
-                }
-            ],
+            "doc": "Get color at each pixel, in nanometers.",
+            "request": [],
             "response": "ndarray"
         },
         "get_measured": {
@@ -257,10 +259,10 @@
     "requires": [],
     "state": {},
     "traits": [
+        "is-daemon",
+        "has-measure-trigger",
         "uses-uart",
         "is-sensor",
-        "has-measure-trigger",
-        "is-daemon",
         "uses-serial"
     ],
     "types": [
