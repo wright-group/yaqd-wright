@@ -2,10 +2,10 @@ import numpy as np  # type: ignore
 import serial  # type: ignore
 import asyncio
 
-from yaqd_core import UsesUart, HasMeasureTrigger, IsSensor
+from yaqd_core import UsesUart, HasMeasureTrigger, IsSensor, IsDaemon
 
 
-class WrightInGaAs(UsesUart, HasMeasureTrigger, IsSensor):
+class WrightInGaAs(UsesUart, HasMeasureTrigger, IsSensor, IsDaemon):
     _kind = "wright-ingaas"
 
     def __init__(self, name, config, config_filepath):
@@ -17,7 +17,7 @@ class WrightInGaAs(UsesUart, HasMeasureTrigger, IsSensor):
         if isinstance(self.spec_setpoint, str):
             host, port = self.spec_setpoint.split(":")
             import yaqc
-            self._spec_client = yaqc.Client(port, host=host)
+            self._spec_client = yaqc.Client(int(port), host=host)
         else:
             self._spec_client = None
         self._ser = serial.Serial()
