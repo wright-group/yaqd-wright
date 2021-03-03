@@ -2,10 +2,10 @@ import numpy as np  # type: ignore
 import serial  # type: ignore
 import asyncio
 
-from yaqd_core import UsesUart, HasMeasureTrigger, IsSensor, IsDaemon
+from yaqd_core import HasMapping, UsesUart, HasMeasureTrigger, IsSensor, IsDaemon
 
 
-class WrightInGaAs(UsesUart, HasMeasureTrigger, IsSensor, IsDaemon):
+class WrightInGaAs(HasMapping, UsesUart, HasMeasureTrigger, IsSensor, IsDaemon):
     _kind = "wright-ingaas"
 
     def __init__(self, name, config, config_filepath):
@@ -13,10 +13,14 @@ class WrightInGaAs(UsesUart, HasMeasureTrigger, IsSensor, IsDaemon):
         self._channel_names = ["ingaas"]
         self._channel_units = {"ingaas": None}
         self._channel_shapes = {"ingaas": (256,)}
-        self.spec_setpoint = self._config["spectrometer_setpoint"]
+
+        self._channel_mappings = {"ingaas": ["wavelengths"]}
+        self._mapping_units = {"wavelengths": "nm"}
+
+        self._spec_position = self._config["spectrometer_position"]
         if isinstance(self.spec_setpoint, str):
-            host, port = self.spec_setpoint.split(":")
-            import yaqc
+            host, port = self._spec_setpoint.split(":")
+            import yaqc  # type: ignore
             self._spec_client = yaqc.Client(int(port), host=host)
         else:
             self._spec_client = None
@@ -25,7 +29,7 @@ class WrightInGaAs(UsesUart, HasMeasureTrigger, IsSensor, IsDaemon):
         self._ser.port = self._config["serial_port"]
         self._ser.open()
 
-    def get_map(self):
+    def _gen_mapping(self):
         """Get map.
 
         Paramters
@@ -41,7 +45,7 @@ class WrightInGaAs(UsesUart, HasMeasureTrigger, IsSensor, IsDaemon):
         i_pixel = np.arange(256)  # 256 pixels
         # calculate terms
         x = np.arcsin(
-            (1e-6 * self._config["order"] * self._config["grooves_per_mm"] * self._spec_setpoint)
+            (1e-6 * self._config["order"] * self._config["grooves_per_mm"] * self.spec_position)
             / (2 * np.cos(spec_inclusion_angle_rad / 2.0))
         )
         A = np.sin(x - spec_inclusion_angle_rad / 2)
@@ -62,6 +66,9 @@ class WrightInGaAs(UsesUart, HasMeasureTrigger, IsSensor, IsDaemon):
 
     async def _measure(self):
         out = np.zeros((256,))
+        # update mapping
+        self._mappings["wavelengths"] = self._gen_mapping()
+
         for _ in range(self._config["spectra_averaged"]):
             self._ser.reset_input_buffer()
             self._ser.write("S".encode())
@@ -71,6 +78,7 @@ class WrightInGaAs(UsesUart, HasMeasureTrigger, IsSensor, IsDaemon):
             # hardcoded processing
             pixels = 0.00195 * (raw_pixels[::-1] - (2060.0 + -0.0142 * np.arange(256)))
             out += pixels / self._config["spectra_averaged"]
+        # check for change in mapping?  perhaps just trust client?
         return {"ingaas": out}
 
     def _read(self):
@@ -88,19 +96,17 @@ class WrightInGaAs(UsesUart, HasMeasureTrigger, IsSensor, IsDaemon):
         self._ser.flush()
         return line[-517:-5]
 
-
     def direct_serial_write(self, data):
         self._busy = True
         self._ser.write(data)
 
-
     @property
-    def _spec_setpoint(self):
+    def spec_position(self) -> float:
         if self._spec_client is None:
-            return self.spec_setpoint
+            return self._spec_position
         else:
             units = self._spec_client.get_units()
-            # ddk: need to be more robust in the future...
+            # inflexible with units; can improve later
             assert units == "nm"
-            setpoint = self._spec_client.get_position()
-            return setpoint
+            position = self._spec_client.get_position()
+            return position

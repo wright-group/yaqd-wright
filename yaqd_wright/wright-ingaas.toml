@@ -1,6 +1,6 @@
 protocol = "wright-ingaas"
 doc = ""
-traits = ["is-daemon", "is-sensor", "has-measure-trigger", "uses-uart"]
+traits = ["is-daemon", "is-sensor", "has-measure-trigger", "uses-uart", "has-mapping"]
 
 [links]
 source = "https://github.com/wright-group/yaqd-wright"
@@ -12,7 +12,7 @@ conda-forge = "https://anaconda.org/conda-forge/yaqd-wright"
 
 [config]
 
-[config.spectrometer_setpoint]
+[config.spectrometer_position]
 type = ["float", "string"]
 doc = "Spectrometer central wavelength (in nm).  Can also poll `has-position` daemon for position by providing string of format 'host:port'."
 
