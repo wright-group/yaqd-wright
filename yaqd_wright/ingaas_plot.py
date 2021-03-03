@@ -6,7 +6,8 @@ ingaas = yaqc.Client(38989)
 fig, ax = plt.subplots()
 fig.subplots_adjust(bottom=0.2)
 t = np.arange(-2.0, 2.0, 0.001)
-l, = ax.plot(t, np.zeros_like(t), lw=2)
+(l,) = ax.plot(t, np.zeros_like(t), lw=2)
+
 
 def submit():
     try:
@@ -19,9 +20,14 @@ def submit():
     ax.autoscale_view()
     plt.draw()
 
+
 timer = fig.canvas.new_timer(interval=200)
+
+
 @timer.add_callback
 def update():
     submit()
+
+
 timer.start()
 plt.show()
