@@ -18,18 +18,20 @@ class WrightInGaAs(HasMapping, UsesUart, HasMeasureTrigger, IsSensor, IsDaemon):
         self._mapping_units = {"wavelengths": "nm"}
 
         self._spec_position = self._config["spectrometer_position"]
-        if isinstance(self.spec_position, str):
+        if isinstance(self._spec_position, str):
             host, port = self._spec_position.split(":")
             import yaqc  # type: ignore
             self._spec_client = yaqc.Client(int(port), host=host)
         else:
             self._spec_client = None
+
+        self._mappings["wavelengths"] = self._gen_mappings()
         self._ser = serial.Serial()
         self._ser.baudrate = self._config["baud_rate"]  # must be 57600
         self._ser.port = self._config["serial_port"]
         self._ser.open()
 
-    def _gen_mapping(self):
+    def _gen_mappings(self):
         """Get map.
         """
         # translate inputs into appropriate internal units
@@ -62,7 +64,7 @@ class WrightInGaAs(HasMapping, UsesUart, HasMeasureTrigger, IsSensor, IsDaemon):
     async def _measure(self):
         out = np.zeros((256,))
         # update mapping
-        self._mappings["wavelengths"] = self._gen_mapping()
+        self._mappings["wavelengths"] = self._gen_mappings()
 
         for _ in range(self._config["spectra_averaged"]):
             self._ser.reset_input_buffer()
@@ -73,7 +75,6 @@ class WrightInGaAs(HasMapping, UsesUart, HasMeasureTrigger, IsSensor, IsDaemon):
             # hardcoded processing
             pixels = 0.00195 * (raw_pixels[::-1] - (2060.0 + -0.0142 * np.arange(256)))
             out += pixels / self._config["spectra_averaged"]
-        # check for change in mapping?  perhaps just trust client?
         return {"ingaas": out}
 
     def _read(self):
