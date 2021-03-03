@@ -18,8 +18,8 @@ class WrightInGaAs(HasMapping, UsesUart, HasMeasureTrigger, IsSensor, IsDaemon):
         self._mapping_units = {"wavelengths": "nm"}
 
         self._spec_position = self._config["spectrometer_position"]
-        if isinstance(self.spec_setpoint, str):
-            host, port = self._spec_setpoint.split(":")
+        if isinstance(self.spec_position, str):
+            host, port = self._spec_position.split(":")
             import yaqc  # type: ignore
             self._spec_client = yaqc.Client(int(port), host=host)
         else:
@@ -31,11 +31,6 @@ class WrightInGaAs(HasMapping, UsesUart, HasMeasureTrigger, IsSensor, IsDaemon):
 
     def _gen_mapping(self):
         """Get map.
-
-        Paramters
-        ---------
-        mono_setpoint : number
-            Mono setpoint in nm.
         """
         # translate inputs into appropriate internal units
         spec_inclusion_angle_rad = np.radians(self._config["inclusion_angle"])
