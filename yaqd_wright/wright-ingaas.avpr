@@ -84,7 +84,7 @@
         },
         "order": {
             "default": 1,
-            "doc": "Spectrometer order of defraction.",
+            "doc": "Spectrometer order of diffraction.",
             "type": "int"
         },
         "port": {
@@ -108,6 +108,13 @@
         "spectra_averaged": {
             "doc": "Number of spectra to average.",
             "type": "int"
+        },
+        "spectrometer_position": {
+            "doc": "Spectrometer central wavelength (in nm).  Can also poll `has-position` daemon for position by providing string of format 'host:port'.",
+            "type": [
+                "float",
+                "string"
+            ]
         }
     },
     "doc": "",
@@ -136,6 +143,18 @@
                 }
             ],
             "response": "null"
+        },
+        "get_channel_mappings": {
+            "doc": "Defines which mapping keys apply to which channel keys. Each channel may have zero or many mappings. Mappings must broadcast into corresponding channels.",
+            "origin": "has-mapping",
+            "request": [],
+            "response": {
+                "type": "map",
+                "values": {
+                    "items": "string",
+                    "type": "array"
+                }
+            }
         },
         "get_channel_names": {
             "doc": "Get current channel names.",
@@ -183,14 +202,40 @@
             "response": "string"
         },
         "get_map": {
-            "doc": "Get color at each pixel, in nanometers. Must give mono setpoint in nanometers.",
-            "request": [
-                {
-                    "name": "mono_setpoint",
-                    "type": "float"
-                }
-            ],
+            "doc": "Get color at each pixel, in nanometers.",
+            "request": [],
             "response": "ndarray"
+        },
+        "get_mapping_id": {
+            "doc": "Mapping ID. This integer increments every time the mapping is updated. Clients can safely check this id to verify that their cached mappings are correct, if desired.",
+            "origin": "has-mapping",
+            "request": [],
+            "response": "int"
+        },
+        "get_mapping_units": {
+            "doc": "Must return units for every mapping. Units can be null.",
+            "origin": "has-mapping",
+            "request": [],
+            "response": {
+                "type": "map",
+                "values": [
+                    "null",
+                    "string"
+                ]
+            }
+        },
+        "get_mappings": {
+            "doc": "Mappings themselves.",
+            "origin": "has-mapping",
+            "request": [],
+            "response": {
+                "type": "map",
+                "values": [
+                    "null",
+                    "ndarray",
+                    "double"
+                ]
+            }
         },
         "get_measured": {
             "doc": "Returns map of channel_name to measured_value. Always returns additional key measurement_id.",
@@ -266,6 +311,7 @@
     "requires": [],
     "state": {},
     "traits": [
+        "has-mapping",
         "has-measure-trigger",
         "is-daemon",
         "is-sensor",

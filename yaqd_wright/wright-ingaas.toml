@@ -1,6 +1,6 @@
 protocol = "wright-ingaas"
 doc = ""
-traits = ["is-daemon", "is-sensor", "has-measure-trigger", "uses-uart"]
+traits = ["is-daemon", "is-sensor", "has-measure-trigger", "uses-uart", "has-mapping"]
 
 [links]
 source = "https://github.com/wright-group/yaqd-wright"
@@ -11,6 +11,10 @@ PyPI = "https://pypi.org/project/yaqd-wright"
 conda-forge = "https://anaconda.org/conda-forge/yaqd-wright"
 
 [config]
+
+[config.spectrometer_position]
+type = ["float", "string"]
+doc = "Spectrometer central wavelength (in nm).  Can also poll `has-position` daemon for position by providing string of format 'host:port'."
 
 [config.inclusion_angle]
 type = "float"
@@ -35,7 +39,7 @@ doc = "Spectrometer grating grooves per mm."
 [config.order]
 type = "int"
 default = 1
-doc = "Spectrometer order of defraction."
+doc = "Spectrometer order of diffraction."
 
 [config.calibration_pixel]
 type = "int"
@@ -51,6 +55,5 @@ doc = "Number of spectra to average."
 [messages]
 
 [messages.get_map]
-request = [{name="mono_setpoint", type="float"}]
 response = "ndarray"
-doc = "Get color at each pixel, in nanometers. Must give mono setpoint in nanometers."
+doc = "Get color at each pixel, in nanometers."

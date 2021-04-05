@@ -1,7 +1,6 @@
 {
     "config": {
         "baud_rate": {
-            "default": 57600,
             "origin": "uses-uart",
             "type": "int"
         },
@@ -10,15 +9,6 @@
             "doc": "Disable this daemon. The kind entry-point will not attempt to start this daemon.",
             "origin": "is-daemon",
             "type": "boolean"
-        },
-        "identifiers": {
-            "default": {},
-            "doc": "Position identifiers",
-            "origin": "is-discrete",
-            "type": {
-                "type": "map",
-                "values": "double"
-            }
         },
         "limits": {
             "default": [
@@ -63,11 +53,6 @@
                 "string"
             ]
         },
-        "microstep": {
-            "default": 1,
-            "doc": "Increases angle resolution of filter wheel; valid integers are 1, 2, 4, 8, 16, 32",
-            "type": "int"
-        },
         "model": {
             "default": null,
             "origin": "is-daemon",
@@ -75,11 +60,6 @@
                 "null",
                 "string"
             ]
-        },
-        "motor": {
-            "default": 0,
-            "doc": "Index for filter wheel motor",
-            "type": "int"
         },
         "out_of_limits": {
             "default": "closest",
@@ -110,14 +90,9 @@
         "serial_port": {
             "origin": "uses-uart",
             "type": "string"
-        },
-        "units": {
-            "default": "deg",
-            "doc": "Units of angle the filter wheel uses to set position",
-            "type": "string"
         }
     },
-    "doc": "Expose a filter wheel as a yaq daemon.\n",
+    "doc": "",
     "fields": {
         "destination": {
             "fields": {
@@ -150,18 +125,6 @@
                 "kind": "hinted",
                 "setter": "set_position",
                 "type": "double"
-            },
-            "name": "field",
-            "type": "record"
-        },
-        "position_identifier": {
-            "fields": {
-                "dynamic": true,
-                "getter": "get_identifier",
-                "kind": "hinted",
-                "options_getter": "get_position_identifiers",
-                "setter": "set_identifier",
-                "type": "string"
             },
             "name": "field",
             "type": "record"
@@ -211,15 +174,6 @@
             "request": [],
             "response": "double"
         },
-        "get_identifier": {
-            "doc": "Get current identifier string. Current identifier may be None.",
-            "origin": "is-discrete",
-            "request": [],
-            "response": [
-                "null",
-                "string"
-            ]
-        },
         "get_limits": {
             "doc": "Get daemon limits.Limits will be the <a href='https://en.wikipedia.org/wiki/Intersection_(set_theory)'>intersection</a> of config limits and driver limits (when appliciable).",
             "origin": "has-limits",
@@ -235,15 +189,6 @@
             "request": [],
             "response": "double"
         },
-        "get_position_identifiers": {
-            "doc": "Get position identifiers. Identifiers may not change at runtime.",
-            "origin": "is-discrete",
-            "request": [],
-            "response": {
-                "type": "map",
-                "values": "double"
-            }
-        },
         "get_state": {
             "doc": "Get version of the running daemon",
             "origin": "is-daemon",
@@ -258,12 +203,6 @@
                 "null",
                 "string"
             ]
-        },
-        "home": {
-            "doc": "Initiates the homing procedure.\nThe daemon will report as busy during the homing procedure.\n After the homing procedure is complete, the daemon will return to the current destination.\n",
-            "origin": "is-homeable",
-            "request": [],
-            "response": "null"
         },
         "id": {
             "doc": "JSON object with information to identify the daemon, including name, kind, make, model, serial.\n",
@@ -287,17 +226,6 @@
                 }
             ],
             "response": "boolean"
-        },
-        "set_identifier": {
-            "doc": "Set using an identifier. Returns new destination.",
-            "origin": "is-discrete",
-            "request": [
-                {
-                    "name": "identifier",
-                    "type": "string"
-                }
-            ],
-            "response": "double"
         },
         "set_position": {
             "doc": "Give the daemon a new destination, and begin motion towards that destination.",
@@ -334,7 +262,7 @@
             "response": "null"
         }
     },
-    "protocol": "wright-filter-wheel",
+    "protocol": "wright-aerotech",
     "requires": [],
     "state": {
         "destination": {
@@ -355,23 +283,12 @@
             "default": NaN,
             "origin": "has-position",
             "type": "double"
-        },
-        "position_identifier": {
-            "default": null,
-            "doc": "Current position identifier.",
-            "origin": "is-discrete",
-            "type": [
-                "null",
-                "string"
-            ]
         }
     },
     "traits": [
         "has-limits",
         "has-position",
         "is-daemon",
-        "is-discrete",
-        "is-homeable",
         "uses-serial",
         "uses-uart"
     ],
