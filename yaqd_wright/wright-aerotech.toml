@@ -10,6 +10,7 @@ bugtracker = "https://github.com/wright-group/yaqd-wright/issues"
 
 [installation]
 PyPI = "https://pypi.org/project/yaqd-wright"
+conda-forge = "https://anaconda.org/conda-forge/yaqd-wright"
 
 [config]
 baud_rate.default = 57600

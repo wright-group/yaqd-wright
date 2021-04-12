@@ -11,9 +11,11 @@ yaq daemons for wright group specific hardware, collected together
 
 This package contains the following daemon(s):
 
-- https://yaq.fyi/daemons/wright-aerotech
+- [wright-aerotech](https://yaq.fyi/daemons/wright-aerotech)
     - Associated hardware and firmware [here](https://github.com/wright-group/Aerotech-101SMC2EN-Control).
-- https://yaq.fyi/daemons/wright-continuous-filter-wheel
+- [wright-filter-wheel](https://yaq.fyi/daemons/wright-filter-wheel)
     - Associated hardware and firmware [here](https://github.com/wright-group/FilterWheels).
-- https://yaq.fyi/daemons/wright-wl-motor
+- [wright-ingaas](https://yaq.fyi/daemons/wright-ingaas)
+    - Associated hardware and firmware [here](https://github.com/wright-group/InGaAs-array).
+- [wright-wl-motor](https://yaq.fyi/daemons/wright-wl-motor)
     - Associated firmware [here](https://github.com/wright-group/wl-motor).
