@@ -2,18 +2,16 @@ __all__ = ["WrightAerotech"]
 
 import asyncio
 
-from yaqd_core import ContinuousHardware, aserial
+from yaqd_core import ContinuousHardware, UsesSerial, UsesUart, IsHomeable, aserial
 
 
-class WrightAerotech(ContinuousHardware):
+class WrightAerotech(UsesUart, IsHomeable, ContinuousHardware):
     _kind = "wright-aerotech"
 
     def __init__(self, name, config, config_filepath):
         super().__init__(name, config, config_filepath)
         self._serial_port = aserial.ASerial(config["serial_port"], config["baud_rate"])
         # Perform any unique initialization
-
-
 
     def _set_position(self, position):
         self._serial_port.write(f"M {position}\n".encode())
@@ -24,6 +22,10 @@ class WrightAerotech(ContinuousHardware):
     def direct_serial_write(self, message):
         self._busy = True
         self._serial_port.write(message.encode())
+    
+    def home(self):
+        loop = asyncio.get_event_loop()
+        loop.create_task(self._home())
         
     async def _home(self):
         self._busy = True
