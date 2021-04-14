@@ -1,6 +1,8 @@
 protocol = "wright-aerotech"
-doc = ""
-traits = ["is-daemon", "has-limits", "uses-uart"]
+doc = """
+New format TOML for aerotech yaq daemon
+"""
+traits = ["is-daemon", "has-limits", "uses-uart", "uses-serial", "is-homeable", "has-position"]
 
 [links]
 source = "https://github.com/wright-group/yaqd-wright"
@@ -11,8 +13,6 @@ PyPI = "https://pypi.org/project/yaqd-wright"
 conda-forge = "https://anaconda.org/conda-forge/yaqd-wright"
 
 [config]
+baud_rate.default = 57600
 
-[state]
-
-[messages]
 
