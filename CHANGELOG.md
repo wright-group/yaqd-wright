@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## Added
 - test script for viewing wright-ingaas spectra is now included in repo
+- wright-aerotech daemon for the customized aerotech translation stage
 
 ## Changed
 - `wright-ingaas` now uses `has-mapping` trait to map spectral axis
