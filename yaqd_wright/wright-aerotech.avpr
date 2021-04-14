@@ -1,6 +1,7 @@
 {
     "config": {
         "baud_rate": {
+            "default": 57600,
             "origin": "uses-uart",
             "type": "int"
         },
@@ -92,7 +93,7 @@
             "type": "string"
         }
     },
-    "doc": "",
+    "doc": "New format TOML for aerotech yaq daemon\n",
     "fields": {
         "destination": {
             "fields": {
@@ -204,6 +205,12 @@
                 "string"
             ]
         },
+        "home": {
+            "doc": "Initiates the homing procedure.\nThe daemon will report as busy during the homing procedure.\n After the homing procedure is complete, the daemon will return to the current destination.\n",
+            "origin": "is-homeable",
+            "request": [],
+            "response": "null"
+        },
         "id": {
             "doc": "JSON object with information to identify the daemon, including name, kind, make, model, serial.\n",
             "origin": "is-daemon",
@@ -289,6 +296,7 @@
         "has-limits",
         "has-position",
         "is-daemon",
+        "is-homeable",
         "uses-serial",
         "uses-uart"
     ],
