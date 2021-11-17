@@ -15,7 +15,7 @@ conda-forge = "https://anaconda.org/conda-forge/yaqd-wright"
 [config]
 motor.type = "int"
 motor.default = 0
-motor.doc = "Index for filter wheel motor"
+motor.doc = "Index for stepper box motor"
 
 baud_rate.default = 57600
 
