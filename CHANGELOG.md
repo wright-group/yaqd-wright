@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## Added
 - wright-fuyu-linear daemon for the customized FUYU linear stage
-- 'Y' home feature for arduino INO for homing towards upper limits 
+- 'Y' home feature for arduino INO for homing towards upper limits
 
 
 ## [2021.4.0]
