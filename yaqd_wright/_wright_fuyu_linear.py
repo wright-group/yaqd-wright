@@ -27,7 +27,9 @@ class WrightFuyuLinear(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart,
     def _set_position(self, position):
         step_position = round(
             self._microstep * (position - self._state["position"]) * self._steps_per_rotation / 360
-        )*(-1)  #NOTE the -1
+        ) * (
+            -1
+        )  # NOTE the -1
         self._serial_port.write(f"M {self._motornum} {step_position}\n".encode())
         self._state["position"] = position
 
