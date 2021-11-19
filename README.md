@@ -19,3 +19,6 @@ This package contains the following daemon(s):
     - Associated hardware and firmware [here](https://github.com/wright-group/InGaAs-array).
 - [wright-wl-motor](https://yaq.fyi/daemons/wright-wl-motor)
     - Associated firmware [here](https://github.com/wright-group/wl-motor).
+
+- [wright-fuyu-linear](https://yaq.fyi/daemons/wright-fuyu-linear)
+    - Associated firmware [here](https://github.com/wright-group/FilterWheels).
