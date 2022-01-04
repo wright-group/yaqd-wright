@@ -5,7 +5,7 @@
 [![yaq](https://img.shields.io/badge/framework-yaq-orange)](https://yaq.fyi/)
 [![black](https://img.shields.io/badge/code--style-black-black)](https://black.readthedocs.io/)
 [![ver](https://img.shields.io/badge/calver-YYYY.0M.MICRO-blue)](https://calver.org/)
-[![log](https://img.shields.io/badge/change-log-informational)](https://gitlab.com/yaq/yaqd-wright/-/blob/master/CHANGELOG.md)
+[![log](https://img.shields.io/badge/change-log-informational)](https://gitlab.com/yaq/yaqd-wright/-/blob/main/CHANGELOG.md)
 
 yaq daemons for wright group specific hardware, collected together
 
@@ -19,3 +19,6 @@ This package contains the following daemon(s):
     - Associated hardware and firmware [here](https://github.com/wright-group/InGaAs-array).
 - [wright-wl-motor](https://yaq.fyi/daemons/wright-wl-motor)
     - Associated firmware [here](https://github.com/wright-group/wl-motor).
+
+- [wright-fuyu-linear](https://yaq.fyi/daemons/wright-fuyu-linear)
+    - Associated firmware [here](https://github.com/wright-group/FilterWheels).

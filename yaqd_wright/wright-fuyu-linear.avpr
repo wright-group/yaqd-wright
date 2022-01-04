@@ -65,7 +65,7 @@
         },
         "microstep": {
             "default": 1,
-            "doc": "Increases angle resolution of filter wheel; valid integers are 1, 2, 4, 8, 16, 32",
+            "doc": "Increases step resolution of stage; valid integers are 1, 2, 4, 8, 16, 32",
             "type": "int"
         },
         "model": {
@@ -78,7 +78,7 @@
         },
         "motor": {
             "default": 0,
-            "doc": "Index for filter wheel motor",
+            "doc": "Index for fuyu linear motor",
             "type": "int"
         },
         "out_of_limits": {
@@ -112,12 +112,12 @@
             "type": "string"
         },
         "units": {
-            "default": "deg",
-            "doc": "Units of angle the filter wheel uses to set position",
+            "default": "mm",
+            "doc": "Units the fuyu linear stage uses to set position",
             "type": "string"
         }
     },
-    "doc": "Expose a filter wheel as a yaq daemon.\n",
+    "doc": "Expose a fuyu linear stage as a yaq daemon.\n",
     "installation": {
         "PyPI": "https://pypi.org/project/yaqd-wright",
         "conda-forge": "https://anaconda.org/conda-forge/yaqd-wright"
@@ -329,7 +329,7 @@
             "units_getter": null
         }
     },
-    "protocol": "wright-filter-wheel",
+    "protocol": "wright-fuyu-linear",
     "requires": [],
     "state": {
         "destination": {

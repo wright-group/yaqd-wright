@@ -1,0 +1,28 @@
+protocol = "wright-fuyu-linear"
+doc = """
+Expose a fuyu linear worm drive as a yaq daemon.
+"""
+traits = ["is-daemon", "has-limits", "uses-uart", "is-homeable", "is-discrete"]
+
+[links]
+source = "https://github.com/wright-group/yaqd-wright"
+bugtracker = "https://github.com/wright-group/yaqd-wright/issues"
+
+[installation]
+PyPI = "https://pypi.org/project/yaqd-wright"
+conda-forge = "https://anaconda.org/conda-forge/yaqd-wright"
+
+[config]
+motor.type = "int"
+motor.default = 0
+motor.doc = "Index for stepper box motor"
+
+baud_rate.default = 57600
+
+units.type = "string"
+units.default = "mm"
+units.doc = "Units the linear drive uses to set position"
+
+microstep.type = "int"
+microstep.default = 1
+microstep.doc = "Increases resolution of linear drive; valid integers are 1, 2, 4, 8, 16, 32"
