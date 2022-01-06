@@ -31,7 +31,9 @@ class WrightFuyuLinear(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart,
             -1
         )  # NOTE the -1
         self._serial_port.write(f"M {self._motornum} {step_position}\n".encode())
-        self._state["position"] = position
+        self._state["position"] += (
+            step_position * 360 / (self._steps_per_rotation * self._microstep)
+        )
 
     def direct_serial_write(self, message):
         self._busy = True
