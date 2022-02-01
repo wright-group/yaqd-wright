@@ -52,7 +52,7 @@ class WrightFuyuLinear(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart,
 
     def _set_microstep(self, microint):
         self._busy = True
-        if microint in [2 ** i for i in range(0, 6)]:
+        if microint in [2**i for i in range(0, 6)]:
             self._serial_port.write(f"U {microint}\n".encode())
             self._microstep = microint
         else:
