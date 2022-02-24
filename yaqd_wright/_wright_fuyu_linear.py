@@ -1,4 +1,4 @@
-__all__ = ["WrightFilterWheel"]
+__all__ = ["WrightFuyuLinear"]
 
 import asyncio
 from typing import Dict
@@ -7,8 +7,8 @@ import time
 from yaqd_core import IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart, UsesSerial, aserial
 
 
-class WrightFilterWheel(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart, UsesSerial):
-    _kind = "wright-filter-wheel"
+class WrightFuyuLinear(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart, UsesSerial):
+    _kind = "wright-fuyu-linear"
     serial_dispatchers: Dict[str, aserial.ASerial] = {}
 
     def __init__(self, name, config, config_filepath):
@@ -16,18 +16,20 @@ class WrightFilterWheel(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart
         self._motornum = config["motor"]
         self._units = config["units"]
         self._microstep = config["microstep"]
-        self._steps_per_rotation = 400
-        if config["serial_port"] in WrightFilterWheel.serial_dispatchers:
-            self._serial_port = WrightFilterWheel.serial_dispatchers[config["serial_port"]]
+        self._steps_per_rotation = config["steps_per_mm"]
+        if config["serial_port"] in WrightFuyuLinear.serial_dispatchers:
+            self._serial_port = WrightFuyuLinear.serial_dispatchers[config["serial_port"]]
         else:
             self._serial_port = aserial.ASerial(config["serial_port"], config["baud_rate"])
-            WrightFilterWheel.serial_dispatchers[config["serial_port"]] = self._serial_port
+            WrightFuyuLinear.serial_dispatchers[config["serial_port"]] = self._serial_port
         self._set_microstep(self._microstep)
 
     def _set_position(self, position):
         step_position = round(
             self._microstep * (position - self._state["position"]) * self._steps_per_rotation / 360
-        )
+        ) * (
+            -1
+        )  # NOTE the -1
         self._serial_port.write(f"M {self._motornum} {step_position}\n".encode())
         self._state["position"] += (
             step_position * 360 / (self._steps_per_rotation * self._microstep)

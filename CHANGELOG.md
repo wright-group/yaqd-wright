@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [2022.2.0]
+
+## Added
+- wright-fuyu-linear daemon for the customized FUYU linear stage
+- 'Y' home feature for arduino INO for homing towards upper limits
+
+
 ## [2021.4.0]
 
 ## Added
@@ -41,7 +48,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/wright-group/yaqd-wright/compare/v2021.4.0...HEAD
+[Unreleased]: https://github.com/wright-group/yaqd-wright/compare/v2022.2.0...HEAD
+[2022.2.0]: https://github.com/wright-group/yaqd-wright/compare/v2021.4.0...v2022.2.0
 [2021.4.0]: https://github.com/wright-group/yaqd-wright/compare/v2021.1.0...v2021.4.0
 [2021.1.0]: https://github.com/wright-group/yaqd-wright/compare/v2020.10.1...v2021.1.0
 [2020.10.1]: https://github.com/wright-group/yaqd-wright/compare/v2020.10.0...v2020.10.1

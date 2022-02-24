@@ -34,6 +34,7 @@ yaqd-wright-aerotech = "yaqd_wright._wright_aerotech:WrightAerotech.main"
 yaqd-wright-filter-wheel = "yaqd_wright._wright_filter_wheel:WrightFilterWheel.main"
 yaqd-wright-ingaas = "yaqd_wright._wright_ingaas:WrightInGaAs.main"
 yaqd-wright-wl-motor = "yaqd_wright._wright_wl_motor:WrightWlMotor.main"
+yaqd-wright-fuyu-linear = "yaqd_wright._wright_fuyu_linear:WrightFuyuLinear.main"
 yaqd-ndinterp= "yaqd_wright._ndinterp:NDInterp.main"
 
 [tool.black]
