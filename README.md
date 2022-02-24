@@ -19,3 +19,5 @@ This package contains the following daemon(s):
     - Associated hardware and firmware [here](https://github.com/wright-group/InGaAs-array).
 - [wright-wl-motor](https://yaq.fyi/daemons/wright-wl-motor)
     - Associated firmware [here](https://github.com/wright-group/wl-motor).
+- [ndinterp](https://yaq.fyi/daemons/ndinterp)
+    - A daemon which behaves similar to attune-delay, but does no unit translation and can be non-additive
