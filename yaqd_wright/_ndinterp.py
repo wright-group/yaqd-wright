@@ -4,7 +4,6 @@ import asyncio
 from typing import Dict, Any, List, Union
 
 from scipy.interpolate import RegularGridInterpolator  # type: ignore
-import pint  # type: ignore
 import yaqc  # type: ignore
 from yaqd_core import HasLimits, IsHomeable, HasPosition, IsDaemon
 import WrightTools as wt  # type: ignore
