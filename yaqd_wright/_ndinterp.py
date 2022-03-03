@@ -17,8 +17,8 @@ class NDInterp(HasLimits, IsHomeable, HasPosition, IsDaemon):
 
         self._data = wt.open(config["data_path"], edit_local=True)
         self._interp = RegularGridInterpolator(
-            (ax[:].flatten for ax in self._data.axes),
-            data["offset"][:],
+            [ax[:].flatten() for ax in self._data.axes],
+            self._data["offset"][:],
             fill_value=0,
         )
 
@@ -37,11 +37,11 @@ class NDInterp(HasLimits, IsHomeable, HasPosition, IsDaemon):
 
     def get_offset(self):
         try:
-            return self._interp(
-                [self._state["control_position"][ax] for ax in self._data.axis_names]
+            return float(
+                self._interp([self._state["control_position"][ax] for ax in self._data.axis_names])
             )
         except KeyError:
-            self._logger.error("Not all control positions found, no offset applied")
+            self.logger.error("Not all control positions found, no offset applied")
         return 0
 
     def set_control_position(self, control: str, position: float):
@@ -89,6 +89,12 @@ class NDInterp(HasLimits, IsHomeable, HasPosition, IsDaemon):
         offset = self._data["offset"]
         offset -= self.get_offset()
         self._data.flush()
+
+        self._interp = RegularGridInterpolator(
+            [ax[:].flatten() for ax in self._data.axes],
+            self._data["offset"][:],
+            fill_value=0,
+        )
 
         self._state["position"] = self._to_offset(self._wrapped_daemon.get_position())
         self._state["destination"] = self._state["position"]
