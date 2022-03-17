@@ -25,6 +25,10 @@ offset.type = "double"
 offset.doc = "Currently applied offset due to cosetting"
 offset.default = 0.0
 
+offset_enabled.type = "boolean"
+offset_enabled.doc = "Whether or not offset is enabled"
+offset_enabled.default = false
+
 zero_position.type = "double"
 zero_position.doc = "Position in underlying stage units that represents the zero position"
 zero_position.default = 0.0
@@ -80,6 +84,14 @@ doc = "Get the zero position underlying daemon limits"
 response = "double"
 doc = "Get the applied offset"
 
+[messages.get_offset_enabled]
+response = "boolean"
+doc = "Get offset enabled"
+
+[messages.set_offset_enabled]
+request = [{"name"="enable", type="boolean"}]
+doc = "Set offset enabled"
+
 [messages.get_dependent_hardware]
 response = {type="map", values="string"}
 doc = "Get mapping of name to host:port string. 'localhost' should be replaced on the client side with the host for this daemon."
@@ -99,6 +111,12 @@ record_kind = "metadata"
 getter = "get_offset"
 units_getter = "get_units"
 type = "double"
-kind = "normal"
 control_kind = "normal"
 record_kind = "data"
+
+[properties.offset_enabled]
+getter = "get_offset_enabled"
+setter = "set_offset_enabled"
+type = "boolean"
+control_kind = "normal"
+record_kind = "metadata"

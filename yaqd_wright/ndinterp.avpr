@@ -182,6 +182,11 @@
             "request": [],
             "response": "double"
         },
+        "get_offset_enabled": {
+            "doc": "Get offset enabled",
+            "request": [],
+            "response": "boolean"
+        },
         "get_position": {
             "doc": "Get current daemon position.",
             "origin": "has-position",
@@ -295,6 +300,16 @@
             ],
             "response": "null"
         },
+        "set_offset_enabled": {
+            "doc": "Set offset enabled",
+            "request": [
+                {
+                    "name": "enable",
+                    "type": "boolean"
+                }
+            ],
+            "response": "null"
+        },
         "set_position": {
             "doc": "Give the daemon a new destination, and begin motion towards that destination.",
             "origin": "has-position",
@@ -363,6 +378,17 @@
             "type": "double",
             "units_getter": "get_units"
         },
+        "offset_enabled": {
+            "control_kind": "normal",
+            "dynamic": true,
+            "getter": "get_offset_enabled",
+            "limits_getter": null,
+            "options_getter": null,
+            "record_kind": "metadata",
+            "setter": "set_offset_enabled",
+            "type": "boolean",
+            "units_getter": null
+        },
         "position": {
             "control_kind": "hinted",
             "dynamic": true,
@@ -413,6 +439,11 @@
             "default": 0.0,
             "doc": "Currently applied offset due to cosetting",
             "type": "double"
+        },
+        "offset_enabled": {
+            "default": false,
+            "doc": "Whether or not offset is enabled",
+            "type": "boolean"
         },
         "position": {
             "default": NaN,

@@ -20,6 +20,7 @@ class NDInterp(HasLimits, IsHomeable, HasPosition, IsDaemon):
         self._interp = RegularGridInterpolator(
             [ax[:].flatten() for ax in self._data.axes],
             self._data[self._offset_channel][:],
+            bounds_error=False,
             fill_value=0,
         )
 
@@ -37,6 +38,8 @@ class NDInterp(HasLimits, IsHomeable, HasPosition, IsDaemon):
         self._set_limits()
 
     def get_offset(self):
+        if not self._state["offset_enabled"]:
+            return 0
         try:
             return float(
                 self._interp([self._state["control_position"][ax] for ax in self._data.axis_names])
@@ -93,7 +96,8 @@ class NDInterp(HasLimits, IsHomeable, HasPosition, IsDaemon):
 
         self._interp = RegularGridInterpolator(
             [ax[:].flatten() for ax in self._data.axes],
-            self._data["offset"][:],
+            self._data[self._offset_channel][:],
+            bounds_error=False,
             fill_value=0,
         )
 
@@ -121,3 +125,10 @@ class NDInterp(HasLimits, IsHomeable, HasPosition, IsDaemon):
 
     def set_control_active(self, control, active):
         return
+
+    def set_offset_enabled(self, enable):
+        self._state["offset_enabled"] = enable
+        self.set_position(self._state["destination"])
+
+    def get_offset_enabled(self):
+        return self._state["offset_enabled"]
