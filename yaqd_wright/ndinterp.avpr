@@ -61,6 +61,11 @@
                 "string"
             ]
         },
+        "offset_channel": {
+            "default": "offset",
+            "doc": "Channel name of the offset",
+            "type": "string"
+        },
         "out_of_limits": {
             "default": "closest",
             "doc": "Control behavior of daemon when set_position is given a value outside of limits.",

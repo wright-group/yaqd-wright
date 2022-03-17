@@ -16,6 +16,10 @@ wrapped_daemon.doc = "port or host:port string of the wrapped delay stage"
 data_path.type = "string"
 data_path.doc = "Absolute file path to a WrightTools Data object which represents the offset in ND space"
 
+offset_channel.type = "string"
+offset_channel.default = "offset"
+offset_channel.doc = "Channel name of the offset"
+
 [state]
 offset.type = "double"
 offset.doc = "Currently applied offset due to cosetting"

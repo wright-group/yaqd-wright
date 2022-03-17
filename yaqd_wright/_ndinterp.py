@@ -16,9 +16,10 @@ class NDInterp(HasLimits, IsHomeable, HasPosition, IsDaemon):
         super().__init__(name, config, config_filepath)
 
         self._data = wt.open(config["data_path"], edit_local=True)
+        self._offset_channel = config["offset_channel"]
         self._interp = RegularGridInterpolator(
             [ax[:].flatten() for ax in self._data.axes],
-            self._data["offset"][:],
+            self._data[self._offset_channel][:],
             fill_value=0,
         )
 
@@ -86,7 +87,7 @@ class NDInterp(HasLimits, IsHomeable, HasPosition, IsDaemon):
         self._state["zero_position"] = position
 
         # Zero curves
-        offset = self._data["offset"]
+        offset = self._data[self._offset_channel]
         offset -= self.get_offset()
         self._data.flush()
 
