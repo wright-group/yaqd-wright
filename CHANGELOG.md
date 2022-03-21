@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [2022.3.0]
+
+## Changed
+- A factor of -1 was incorporated into the _set_position method to correct
+ for an error in reporting destination.
+
+
 ## [2022.2.0]
 
 ## Added
