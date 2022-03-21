@@ -1,4 +1,4 @@
-__all__ = ["AttuneDelay"]
+__all__ = ["NDInterp"]
 
 import asyncio
 from typing import Dict, Any, List, Union
