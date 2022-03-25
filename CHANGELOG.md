@@ -7,10 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [2022.3.0]
 
-## Changed
-- A factor of -1 was incorporated into the _set_position method to correct
- for an error in reporting destination.
+### Changed
+- A factor of -1 was incorporated into the `_set_position` method to correct
 
+### Added
+- NDInterp daemon to do N-dimensional interpolation of complicated offsets
 
 ## [2022.2.0]
 
@@ -55,7 +56,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/wright-group/yaqd-wright/compare/v2022.2.0...HEAD
+[Unreleased]: https://github.com/wright-group/yaqd-wright/compare/v2022.3.0...HEAD
+[2022.3.0]: https://github.com/wright-group/yaqd-wright/compare/v2022.2.0...v2022.3.0
 [2022.2.0]: https://github.com/wright-group/yaqd-wright/compare/v2021.4.0...v2022.2.0
 [2021.4.0]: https://github.com/wright-group/yaqd-wright/compare/v2021.1.0...v2021.4.0
 [2021.1.0]: https://github.com/wright-group/yaqd-wright/compare/v2020.10.1...v2021.1.0
