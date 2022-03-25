@@ -1,9 +1,8 @@
 {
     "config": {
-        "baud_rate": {
-            "default": 57600,
-            "origin": "uses-uart",
-            "type": "int"
+        "data_path": {
+            "doc": "Absolute file path to a WrightTools Data object which represents the offset in ND space",
+            "type": "string"
         },
         "enable": {
             "default": true,
@@ -62,6 +61,11 @@
                 "string"
             ]
         },
+        "offset_channel": {
+            "default": "offset",
+            "doc": "Channel name of the offset",
+            "type": "string"
+        },
         "out_of_limits": {
             "default": "closest",
             "doc": "Control behavior of daemon when set_position is given a value outside of limits.",
@@ -88,15 +92,17 @@
                 "string"
             ]
         },
-        "serial_port": {
-            "origin": "uses-uart",
-            "type": "string"
+        "wrapped_daemon": {
+            "doc": "port or host:port string of the wrapped delay stage",
+            "type": [
+                "int",
+                "string"
+            ]
         }
     },
-    "doc": "New format TOML for aerotech yaq daemon\n",
+    "doc": "yaq daemon representing an NDimensional interpolated offset",
     "installation": {
-        "PyPI": "https://pypi.org/project/yaqd-wright",
-        "conda-forge": "https://anaconda.org/conda-forge/yaqd-wright"
+        "PyPI": "https://pypi.org/project/yaqd-wright"
     },
     "links": {
         "bugtracker": "https://github.com/wright-group/yaqd-wright/issues",
@@ -109,17 +115,6 @@
             "request": [],
             "response": "boolean"
         },
-        "direct_serial_write": {
-            "doc": "Expose direct access to the serial port to clients.\n\nThis should not be encouraged for normal use, but may be very important for debugging.\nIf a device is expected to return data, it should be logged at the INFO level, not returned to the client.\nThis is done to allow long tasks to be run asynchronously, and to explicitly discourage use of this method except when debugging.\nSetting `busy` to true is encouraged, but individual daemon writers should consider their own use case.\n",
-            "origin": "uses-serial",
-            "request": [
-                {
-                    "name": "message",
-                    "type": "bytes"
-                }
-            ],
-            "response": "null"
-        },
         "get_config": {
             "doc": "Full configuration for the individual daemon as defined in the TOML file.\nThis includes defaults and shared settings not directly specified in the daemon-specific TOML table.\n",
             "origin": "is-daemon",
@@ -131,6 +126,41 @@
             "origin": "is-daemon",
             "request": [],
             "response": "string"
+        },
+        "get_control_active": {
+            "doc": "No-Op, here to make it behave like an attune-delay to the attune object, returns empty dict",
+            "request": [],
+            "response": {
+                "type": "map",
+                "values": "boolean"
+            }
+        },
+        "get_control_positions": {
+            "doc": "Get underlying control positions, provides a mapping of names to positions, in native units.",
+            "request": [],
+            "response": {
+                "type": "map",
+                "values": "double"
+            }
+        },
+        "get_control_tunes": {
+            "doc": "No-Op, here to make it behave like an attune-delay to the attune object, returns empty dict",
+            "request": [],
+            "response": {
+                "type": "map",
+                "values": [
+                    "null",
+                    "string"
+                ]
+            }
+        },
+        "get_dependent_hardware": {
+            "doc": "Get mapping of name to host:port string. 'localhost' should be replaced on the client side with the host for this daemon.",
+            "request": [],
+            "response": {
+                "type": "map",
+                "values": "string"
+            }
         },
         "get_destination": {
             "doc": "Get current daemon destination.",
@@ -146,6 +176,16 @@
                 "items": "double",
                 "type": "array"
             }
+        },
+        "get_offset": {
+            "doc": "Get the applied offset",
+            "request": [],
+            "response": "double"
+        },
+        "get_offset_enabled": {
+            "doc": "Get offset enabled",
+            "request": [],
+            "response": "boolean"
         },
         "get_position": {
             "doc": "Get current daemon position.",
@@ -167,6 +207,24 @@
                 "null",
                 "string"
             ]
+        },
+        "get_zero_position": {
+            "doc": "Get the zero position in underlying daemon units",
+            "request": [],
+            "response": "double"
+        },
+        "get_zero_position_limits": {
+            "doc": "Get the zero position underlying daemon limits",
+            "request": [],
+            "response": {
+                "items": "double",
+                "type": "array"
+            }
+        },
+        "get_zero_position_units": {
+            "doc": "Get the zero position underlying daemon units",
+            "request": [],
+            "response": "string"
         },
         "home": {
             "doc": "Initiates the homing procedure.\nThe daemon will report as busy during the homing procedure.\n After the homing procedure is complete, the daemon will return to the current destination.\n",
@@ -197,6 +255,61 @@
             ],
             "response": "boolean"
         },
+        "set_control_active": {
+            "doc": "No-Op, here to make it behave like an attune-delay to the attune object",
+            "request": [
+                {
+                    "name": "control",
+                    "type": "string"
+                },
+                {
+                    "name": "active",
+                    "type": "boolean"
+                }
+            ],
+            "response": "null"
+        },
+        "set_control_position": {
+            "doc": "Set the cached value of the control hardware, causes delay to recompute its offset and adjust appropriately",
+            "request": [
+                {
+                    "name": "control",
+                    "type": "string"
+                },
+                {
+                    "name": "position",
+                    "type": "double"
+                }
+            ],
+            "response": "null"
+        },
+        "set_control_tune": {
+            "doc": "No-Op, here to make it behave like an attune-delay to the attune object",
+            "request": [
+                {
+                    "name": "control",
+                    "type": "string"
+                },
+                {
+                    "name": "tune",
+                    "type": [
+                        "null",
+                        "string"
+                    ]
+                }
+            ],
+            "response": "null"
+        },
+        "set_offset_enabled": {
+            "doc": "Set offset enabled",
+            "request": [
+                {
+                    "name": "enable",
+                    "type": "boolean"
+                }
+            ],
+            "response": "null"
+        },
         "set_position": {
             "doc": "Give the daemon a new destination, and begin motion towards that destination.",
             "origin": "has-position",
@@ -218,6 +331,16 @@
                 }
             ],
             "response": "double"
+        },
+        "set_zero_position": {
+            "doc": "Set the zero position in underlying daemon units",
+            "request": [
+                {
+                    "name": "position",
+                    "type": "double"
+                }
+            ],
+            "response": "null"
         },
         "shutdown": {
             "doc": "Cleanly shutdown (or restart) daemon.",
@@ -244,6 +367,28 @@
             "type": "double",
             "units_getter": "get_units"
         },
+        "offset": {
+            "control_kind": "normal",
+            "dynamic": true,
+            "getter": "get_offset",
+            "limits_getter": null,
+            "options_getter": null,
+            "record_kind": "data",
+            "setter": null,
+            "type": "double",
+            "units_getter": "get_units"
+        },
+        "offset_enabled": {
+            "control_kind": "normal",
+            "dynamic": true,
+            "getter": "get_offset_enabled",
+            "limits_getter": null,
+            "options_getter": null,
+            "record_kind": "metadata",
+            "setter": "set_offset_enabled",
+            "type": "boolean",
+            "units_getter": null
+        },
         "position": {
             "control_kind": "hinted",
             "dynamic": true,
@@ -254,11 +399,28 @@
             "setter": "set_position",
             "type": "double",
             "units_getter": "get_units"
+        },
+        "zero_position": {
+            "control_kind": "normal",
+            "dynamic": true,
+            "getter": "get_zero_position",
+            "limits_getter": "get_zero_position_limits",
+            "options_getter": null,
+            "record_kind": "metadata",
+            "setter": "set_zero_position",
+            "type": "double",
+            "units_getter": "get_zero_position_units"
         }
     },
-    "protocol": "wright-aerotech",
+    "protocol": "ndinterp",
     "requires": [],
     "state": {
+        "control_position": {
+            "default": {},
+            "doc": "Cached position of the control hardware",
+            "type": "map",
+            "values": "double"
+        },
         "destination": {
             "default": NaN,
             "origin": "has-position",
@@ -273,9 +435,24 @@
             "origin": "has-limits",
             "type": "array"
         },
+        "offset": {
+            "default": 0.0,
+            "doc": "Currently applied offset due to cosetting",
+            "type": "double"
+        },
+        "offset_enabled": {
+            "default": false,
+            "doc": "Whether or not offset is enabled",
+            "type": "boolean"
+        },
         "position": {
             "default": NaN,
             "origin": "has-position",
+            "type": "double"
+        },
+        "zero_position": {
+            "default": 0.0,
+            "doc": "Position in underlying stage units that represents the zero position",
             "type": "double"
         }
     },
@@ -283,9 +460,7 @@
         "has-limits",
         "has-position",
         "is-daemon",
-        "is-homeable",
-        "uses-serial",
-        "uses-uart"
+        "is-homeable"
     ],
     "types": [
         {

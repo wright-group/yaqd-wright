@@ -33,4 +33,6 @@ jobs:
         yaqd-wright-aerotech -h
         yaqd-wright-ingaas --version
         yaqd-wright-ingaas -h
+        yaqd-ndinterp --version
+        yaqd-ndinterp -h
 

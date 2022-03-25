@@ -1,0 +1,122 @@
+protocol = "ndinterp"
+doc="yaq daemon representing an NDimensional interpolated offset"
+traits=["has-limits", "is-homeable", "is-daemon"]
+
+[links]
+source = "https://github.com/wright-group/yaqd-wright"
+bugtracker = "https://github.com/wright-group/yaqd-wright/issues"
+
+[installation]
+PyPI = "https://pypi.org/project/yaqd-wright"
+
+[config]
+wrapped_daemon.type = ["int", "string"]
+wrapped_daemon.doc = "port or host:port string of the wrapped delay stage"
+
+data_path.type = "string"
+data_path.doc = "Absolute file path to a WrightTools Data object which represents the offset in ND space"
+
+offset_channel.type = "string"
+offset_channel.default = "offset"
+offset_channel.doc = "Channel name of the offset"
+
+[state]
+offset.type = "double"
+offset.doc = "Currently applied offset due to cosetting"
+offset.default = 0.0
+
+offset_enabled.type = "boolean"
+offset_enabled.doc = "Whether or not offset is enabled"
+offset_enabled.default = false
+
+zero_position.type = "double"
+zero_position.doc = "Position in underlying stage units that represents the zero position"
+zero_position.default = 0.0
+
+control_position.type = "map"
+control_position.values = "double"
+control_position.doc = "Cached position of the control hardware"
+control_position.default = {}
+
+[messages]
+
+[messages.set_control_position]
+request = [{name="control", type="string"}, {name="position", type="double"}]
+doc = "Set the cached value of the control hardware, causes delay to recompute its offset and adjust appropriately"
+
+[messages.get_control_positions]
+response = {type="map", values="double"}
+doc = "Get underlying control positions, provides a mapping of names to positions, in native units."
+
+[messages.set_control_tune]
+request = [{name="control", type="string"}, {name="tune", type=["null", "string"]}]
+doc = "No-Op, here to make it behave like an attune-delay to the attune object"
+
+[messages.get_control_tunes]
+response = {type="map", values=["null", "string"]}
+doc = "No-Op, here to make it behave like an attune-delay to the attune object, returns empty dict"
+
+[messages.set_control_active]
+request = [{name="control", type="string"}, {name="active", type="boolean"}]
+doc = "No-Op, here to make it behave like an attune-delay to the attune object"
+
+[messages.get_control_active]
+response = {type="map", values="boolean"}
+doc = "No-Op, here to make it behave like an attune-delay to the attune object, returns empty dict"
+
+[messages.set_zero_position]
+request = [{name="position", type="double"}]
+doc = "Set the zero position in underlying daemon units"
+
+[messages.get_zero_position]
+response = "double"
+doc = "Get the zero position in underlying daemon units"
+
+[messages.get_zero_position_units]
+response = "string"
+doc = "Get the zero position underlying daemon units"
+
+[messages.get_zero_position_limits]
+response = {"type"="array", "items"="double"}
+doc = "Get the zero position underlying daemon limits"
+
+[messages.get_offset]
+response = "double"
+doc = "Get the applied offset"
+
+[messages.get_offset_enabled]
+response = "boolean"
+doc = "Get offset enabled"
+
+[messages.set_offset_enabled]
+request = [{"name"="enable", type="boolean"}]
+doc = "Set offset enabled"
+
+[messages.get_dependent_hardware]
+response = {type="map", values="string"}
+doc = "Get mapping of name to host:port string. 'localhost' should be replaced on the client side with the host for this daemon."
+
+[properties]
+
+[properties.zero_position]
+getter = "get_zero_position"
+setter = "set_zero_position"
+limits_getter = "get_zero_position_limits"
+units_getter = "get_zero_position_units"
+type = "double"
+control_kind = "normal"
+record_kind = "metadata"
+
+[properties.offset]
+getter = "get_offset"
+units_getter = "get_units"
+type = "double"
+control_kind = "normal"
+record_kind = "data"
+
+[properties.offset_enabled]
+getter = "get_offset_enabled"
+setter = "set_offset_enabled"
+type = "boolean"
+control_kind = "normal"
+record_kind = "metadata"
