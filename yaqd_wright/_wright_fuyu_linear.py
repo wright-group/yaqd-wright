@@ -16,7 +16,7 @@ class WrightFuyuLinear(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart,
         self._motornum = config["motor"]
         self._units = config["units"]
         self._microstep = config["microstep"]
-        self._steps_per_rotation = config["steps_per_mm"]
+        self._steps_per_mm = config["steps_per_mm"]
         if config["serial_port"] in WrightFuyuLinear.serial_dispatchers:
             self._serial_port = WrightFuyuLinear.serial_dispatchers[config["serial_port"]]
         else:
@@ -26,13 +26,12 @@ class WrightFuyuLinear(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart,
 
     def _set_position(self, position):
         step_position = round(
-            self._microstep * (position - self._state["position"]) * self._steps_per_rotation / 360
-        ) * (
-            -1
-        )  # NOTE the -1
+            self._microstep * (position - self._state["position"]) * self._steps_per_mm
+        ) * -1  # NOTE: -1
         self._serial_port.write(f"M {self._motornum} {step_position}\n".encode())
-        self._state["position"] += (
-            step_position * 360 / (self._steps_per_rotation * self._microstep) * (-1)  # NOTE
+        # NOTE: -=
+        self._state["position"] -= (
+            step_position / (self._steps_per_rotation * self._microstep)
         )
 
     def direct_serial_write(self, message):
