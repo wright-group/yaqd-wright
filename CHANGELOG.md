@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed
+- Unified FuYu linear and filter wheel into one daemon, wright-stepper-box
+- Fixed problems with multiple setting of stepper box daemons
+
 ## [2022.3.0]
 
 ### Changed

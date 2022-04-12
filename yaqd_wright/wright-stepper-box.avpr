@@ -22,8 +22,8 @@
         },
         "limits": {
             "default": [
-                -Infinity,
-                Infinity
+                -720.0,
+                720.0
             ],
             "doc": "Configuration limits are strictly optional.",
             "items": "double",
@@ -65,7 +65,7 @@
         },
         "microstep": {
             "default": 1,
-            "doc": "Increases angle resolution of filter wheel; valid integers are 1, 2, 4, 8, 16, 32",
+            "doc": "Increases angle resolution of motor stepping; valid integers are 1, 2, 4, 8, 16, 32; Must be the same for all motors in a box",
             "type": "int"
         },
         "model": {
@@ -78,7 +78,7 @@
         },
         "motor": {
             "default": 0,
-            "doc": "Index for filter wheel motor",
+            "doc": "Index for the motor",
             "type": "int"
         },
         "out_of_limits": {
@@ -111,13 +111,18 @@
             "origin": "uses-uart",
             "type": "string"
         },
+        "steps_per_unit": {
+            "default": 1.1111111111111112,
+            "doc": "Number of full motor steps per 1 unit. This is independent of microstepping",
+            "type": "double"
+        },
         "units": {
             "default": "deg",
-            "doc": "Units of angle the filter wheel uses to set position",
+            "doc": "Units of the motor",
             "type": "string"
         }
     },
-    "doc": "Expose a filter wheel as a yaq daemon.\n",
+    "doc": "Expose a stepper box motor as a yaq daemon.\n\nThe uses for this daemon combine the implementation of 'Filter Wheels' and \n'Linear stepper drivers' (sometimes referred to  as FuYu motors)\n\nYou can specify discrete stops which is particularly useful for discrete filter wheels.\n\nThe default settings are for operation as a continuous filter wheel:\n- No discrete stops\n- units of 'deg'\n- 1.11111... steps per unit (0.9 degrees per step, or 400 steps per revolution)\n- two full revolutions (720 degrees) in either direction from the home flag\n\nThe settings for our standard 50 mm 'fuyu' motors:\n- No discrete stops\n- units of 'mm'\n- -100.0 steps per unit (pitch of 2.0 mm per revolution,  200 steps per revolution)\n- Negative because of direction of travel from home\n- limits = [0.0, 50.0]\n\nThe settings for our larger 400 mm 'fuyu' motors:\n- No discrete stops\n- units of 'mm'\n- -20.0 steps per unit (pitch of 5.0 mm per revolution,  100 steps per revolution)\n- Negative because of direction of travel from home\n- limits = [0.0, 400.0]\n",
     "installation": {
         "PyPI": "https://pypi.org/project/yaqd-wright",
         "conda-forge": "https://anaconda.org/conda-forge/yaqd-wright"
@@ -329,7 +334,7 @@
             "units_getter": null
         }
     },
-    "protocol": "wright-filter-wheel",
+    "protocol": "wright-stepper-box",
     "requires": [],
     "state": {
         "destination": {
