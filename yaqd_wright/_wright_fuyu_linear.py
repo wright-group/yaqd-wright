@@ -25,14 +25,12 @@ class WrightFuyuLinear(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart,
         self._set_microstep(self._microstep)
 
     def _set_position(self, position):
-        step_position = round(
-            self._microstep * (position - self._state["position"]) * self._steps_per_mm
-        ) * -1  # NOTE: -1
+        step_position = (
+            round(self._microstep * (position - self._state["position"]) * self._steps_per_mm) * -1
+        )  # NOTE: -1
         self._serial_port.write(f"M {self._motornum} {step_position}\n".encode())
         # NOTE: -=
-        self._state["position"] -= (
-            step_position / (self._steps_per_mm * self._microstep)
-        )
+        self._state["position"] -= step_position / (self._steps_per_mm * self._microstep)
 
     def direct_serial_write(self, message):
         self._busy = True
