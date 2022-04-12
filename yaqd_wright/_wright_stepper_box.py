@@ -40,6 +40,7 @@ class WrightStepperBox(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart,
         self._busy = True
         self._serial_port.write(f"H {self._motornum}\n".encode())
         self._reset_on_not_busy = True
+        self._state["position"] = 0.0
 
     def _set_microstep(self, microint):
         self._busy = True
@@ -55,6 +56,7 @@ class WrightStepperBox(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart,
             self._busy = line[0:1] != b"R"
             if self._reset_on_not_busy and not self._busy:
                 self._busy = True
+                self._reset_on_not_busy = False
                 step_position = round(
                     self._microstep
                     * (self._state["destination"] - self._state["position"])
