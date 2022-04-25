@@ -27,8 +27,8 @@ jobs:
       run: |
         yaqd-wright-wl-motor --version
         yaqd-wright-wl-motor -h
-        yaqd-wright-filter-wheel --version
-        yaqd-wright-filter-wheel -h
+        yaqd-wright-stepper-box --version
+        yaqd-wright-stepper-box -h
         yaqd-wright-aerotech --version
         yaqd-wright-aerotech -h
         yaqd-wright-ingaas --version

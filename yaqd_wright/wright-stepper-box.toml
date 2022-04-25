@@ -1,0 +1,59 @@
+protocol = "wright-stepper-box"
+doc = """
+Expose a stepper box motor as a yaq daemon.
+
+The uses for this daemon combine the implementation of 'Filter Wheels' and
+'Linear stepper drivers' (sometimes referred to  as FuYu motors)
+
+You can specify discrete stops which is particularly useful for discrete filter wheels.
+
+The default settings are for operation as a continuous filter wheel:
+- No discrete stops
+- units of 'deg'
+- 1.11111... steps per unit (0.9 degrees per step, or 400 steps per revolution)
+- two full revolutions (720 degrees) in either direction from the home flag
+
+The settings for our standard 50 mm 'fuyu' motors:
+- No discrete stops
+- units of 'mm'
+- -100.0 steps per unit (pitch of 2.0 mm per revolution,  200 steps per revolution)
+- Negative because of direction of travel from home
+- limits = [0.0, 50.0]
+
+The settings for our larger 400 mm 'fuyu' motors:
+- No discrete stops
+- units of 'mm'
+- -20.0 steps per unit (pitch of 5.0 mm per revolution,  100 steps per revolution)
+- Negative because of direction of travel from home
+- limits = [0.0, 400.0]
+"""
+traits = ["is-daemon", "has-limits", "uses-uart", "is-homeable", "is-discrete"]
+
+[links]
+source = "https://github.com/wright-group/yaqd-wright"
+bugtracker = "https://github.com/wright-group/yaqd-wright/issues"
+
+[installation]
+PyPI = "https://pypi.org/project/yaqd-wright"
+conda-forge = "https://anaconda.org/conda-forge/yaqd-wright"
+
+[config]
+limits.default = [-720.0, 720.0]
+
+motor.type = "int"
+motor.default = 0
+motor.doc = "Index for the motor"
+
+baud_rate.default = 57600
+
+units.type = "string"
+units.default = "deg"
+units.doc = "Units of the motor"
+
+steps_per_unit.type = "double"
+steps_per_unit.default = 1.1111111111111111
+steps_per_unit.doc = "Number of full motor steps per 1 unit. This is independent of microstepping"
+
+microstep.type = "int"
+microstep.default = 1
+microstep.doc = "Increases angle resolution of motor stepping; valid integers are 1, 2, 4, 8, 16, 32; Must be the same for all motors in a box"

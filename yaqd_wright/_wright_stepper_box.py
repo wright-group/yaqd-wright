@@ -1,4 +1,4 @@
-__all__ = ["WrightFuyuLinear"]
+__all__ = ["WrightStepperBox"]
 
 import asyncio
 from typing import Dict
@@ -7,33 +7,26 @@ import time
 from yaqd_core import IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart, UsesSerial, aserial
 
 
-class WrightFuyuLinear(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart, UsesSerial):
-    _kind = "wright-fuyu-linear"
+class WrightStepperBox(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart, UsesSerial):
+    _kind = "wright-stepper-box"
     serial_dispatchers: Dict[str, aserial.ASerial] = {}
 
     def __init__(self, name, config, config_filepath):
         super().__init__(name, config, config_filepath)
+        self._reset_on_not_busy = False
         self._motornum = config["motor"]
         self._units = config["units"]
         self._microstep = config["microstep"]
-        self._steps_per_rotation = config["steps_per_mm"]
-        if config["serial_port"] in WrightFuyuLinear.serial_dispatchers:
-            self._serial_port = WrightFuyuLinear.serial_dispatchers[config["serial_port"]]
+        self._steps_per_unit = config["steps_per_unit"]
+        if config["serial_port"] in WrightStepperBox.serial_dispatchers:
+            self._serial_port = WrightStepperBox.serial_dispatchers[config["serial_port"]]
         else:
             self._serial_port = aserial.ASerial(config["serial_port"], config["baud_rate"])
-            WrightFuyuLinear.serial_dispatchers[config["serial_port"]] = self._serial_port
+            WrightStepperBox.serial_dispatchers[config["serial_port"]] = self._serial_port
         self._set_microstep(self._microstep)
 
     def _set_position(self, position):
-        step_position = round(
-            self._microstep * (position - self._state["position"]) * self._steps_per_rotation / 360
-        ) * (
-            -1
-        )  # NOTE the -1
-        self._serial_port.write(f"M {self._motornum} {step_position}\n".encode())
-        self._state["position"] += (
-            step_position * 360 / (self._steps_per_rotation * self._microstep) * (-1)  # NOTE
-        )
+        self._reset_on_not_busy = True
 
     def direct_serial_write(self, message):
         self._busy = True
@@ -46,9 +39,8 @@ class WrightFuyuLinear(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart,
     async def _home(self):
         self._busy = True
         self._serial_port.write(f"H {self._motornum}\n".encode())
-        await self._not_busy_sig.wait()
-        self._state["position"] = 0
-        self.set_position(self._state["destination"])
+        self._reset_on_not_busy = True
+        self._state["position"] = 0.0
 
     def _set_microstep(self, microint):
         self._busy = True
@@ -62,6 +54,16 @@ class WrightFuyuLinear(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart,
         while True:
             line = await self._serial_port.awrite_then_readline(f"Q {self._motornum}\n".encode())
             self._busy = line[0:1] != b"R"
+            if self._reset_on_not_busy and not self._busy:
+                self._busy = True
+                self._reset_on_not_busy = False
+                step_position = round(
+                    self._microstep
+                    * (self._state["destination"] - self._state["position"])
+                    * self._steps_per_unit
+                )
+                self._serial_port.write(f"M {self._motornum} {step_position}\n".encode())
+                self._state["position"] += step_position / (self._steps_per_unit * self._microstep)
             self.logger.debug(f"{self._busy=}")
             await asyncio.sleep(0.2)
             if self._busy:
