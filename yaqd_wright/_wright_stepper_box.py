@@ -38,11 +38,11 @@ class WrightStepperBox(
         self._factor = config["factor"]
 
     def _relative_to_transformed(self, relative_position):
-        """allow param "invert" to multiply scale"""
+        """allow param "factor" to multiply scale"""
         return relative_position * self._factor
 
     def _transformed_to_relative(self, transformed_position):
-        """allow param "invert" to multiply axis"""
+        """allow param "factor" to multiply axis"""
         return transformed_position / self._factor
 
     def _set_position(self, position):
