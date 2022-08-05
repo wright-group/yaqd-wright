@@ -27,7 +27,7 @@ The settings for our larger 400 mm 'fuyu' motors:
 - Negative because of direction of travel from home
 - limits = [0.0, 400.0]
 """
-traits = ["is-daemon", "has-limits", "uses-uart", "is-homeable", "is-discrete"]
+traits = ["is-daemon", "has-limits", "uses-uart", "is-homeable", "is-discrete", "has-transformed-position"]
 
 [links]
 source = "https://github.com/wright-group/yaqd-wright"
@@ -57,3 +57,20 @@ steps_per_unit.doc = "Number of full motor steps per 1 unit. This is independent
 microstep.type = "int"
 microstep.default = 1
 microstep.doc = "Increases angle resolution of motor stepping; valid integers are 1, 2, 4, 8, 16, 32; Must be the same for all motors in a box"
+
+factor.type = "float"
+factor.default = 1
+factor.doc = "Multiplier factor to transform position"
+
+[messages]
+
+get_factor.response = "float"
+get_factor.doc = "Get the multiplier factor that transforms position."
+
+[properties]
+
+[properties.factor]
+getter = "get_factor"
+control_kind = "normal"
+record_kind = "metadata"
+type = "float"

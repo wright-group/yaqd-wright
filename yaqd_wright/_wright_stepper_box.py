@@ -4,10 +4,10 @@ import asyncio
 from typing import Dict
 import time
 
-from yaqd_core import IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart, UsesSerial, aserial
+from yaqd_core import HasTransformedPosition, IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart, UsesSerial, aserial
 
 
-class WrightStepperBox(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart, UsesSerial):
+class WrightStepperBox(HasTransformedPosition, IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart, UsesSerial):
     _kind = "wright-stepper-box"
     serial_dispatchers: Dict[str, aserial.ASerial] = {}
 
@@ -24,6 +24,17 @@ class WrightStepperBox(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart,
             self._serial_port = aserial.ASerial(config["serial_port"], config["baud_rate"])
             WrightStepperBox.serial_dispatchers[config["serial_port"]] = self._serial_port
         self._set_microstep(self._microstep)
+        self._factor = config["factor"]
+
+    def _relative_to_transformed(self, relative_position):
+        """allow param "invert" to multiply scale
+        """
+        return relative_position * self._factor
+
+    def _transformed_to_relative(self, transformed_position):
+        """allow param "invert" to multiply axis
+        """
+        return transformed_position / self._factor
 
     def _set_position(self, position):
         self._reset_on_not_busy = True
@@ -74,3 +85,6 @@ class WrightStepperBox(IsHomeable, HasLimits, IsDiscrete, HasPosition, UsesUart,
                     if round(self._state["position"]) == round(v):
                         k1 = k
                 self._state["position_identifier"] = k1
+
+    def get_factor(self) -> float:
+        return self._factor
