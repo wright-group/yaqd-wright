@@ -9,7 +9,7 @@ from yaqd_core import HasLimits, IsHomeable, HasPosition, IsDaemon, HasDependent
 import WrightTools as wt  # type: ignore
 
 
-class NDInterp(HadDependents, HasLimits, IsHomeable, HasPosition, IsDaemon):
+class NDInterp(HasDependents, HasLimits, IsHomeable, HasPosition, IsDaemon):
     _kind = "ndinterp"
 
     def __init__(self, name, config, config_filepath):
