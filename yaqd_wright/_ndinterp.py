@@ -5,11 +5,11 @@ from typing import Dict, Any, List, Union
 
 from scipy.interpolate import RegularGridInterpolator  # type: ignore
 import yaqc  # type: ignore
-from yaqd_core import HasLimits, IsHomeable, HasPosition, IsDaemon
+from yaqd_core import HasLimits, IsHomeable, HasPosition, IsDaemon, HasDependents
 import WrightTools as wt  # type: ignore
 
 
-class NDInterp(HasLimits, IsHomeable, HasPosition, IsDaemon):
+class NDInterp(HasDependents, HasLimits, IsHomeable, HasPosition, IsDaemon):
     _kind = "ndinterp"
 
     def __init__(self, name, config, config_filepath):

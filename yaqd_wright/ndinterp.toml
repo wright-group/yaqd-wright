@@ -1,6 +1,6 @@
 protocol = "ndinterp"
 doc="yaq daemon representing an NDimensional interpolated offset"
-traits=["has-limits", "is-homeable", "is-daemon"]
+traits=["has-dependents", "has-limits", "is-homeable", "is-daemon"]
 
 [links]
 source = "https://github.com/wright-group/yaqd-wright"
@@ -91,10 +91,6 @@ doc = "Get offset enabled"
 [messages.set_offset_enabled]
 request = [{"name"="enable", type="boolean"}]
 doc = "Set offset enabled"
-
-[messages.get_dependent_hardware]
-response = {type="map", values="string"}
-doc = "Get mapping of name to host:port string. 'localhost' should be replaced on the client side with the host for this daemon."
 
 [properties]
 
