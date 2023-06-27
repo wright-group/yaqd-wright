@@ -1,0 +1,22 @@
+protocol = "wright-servo-shutter"
+doc = """Expose a servo shutter motor as a yaq daemon.
+          The servo is currently set up for a discrete behavior, moving between an OFF and an ON position."""
+
+traits = ["is-daemon", "uses-uart", "is-discrete"]
+
+[links]
+source = "https://github.com/wright-group/yaqd-wright"
+bugtracker = "https://github.com/wright-group/yaqd-wright/issues"
+
+[installation]
+PyPI = "https://pypi.org/project/yaqd-wright"
+conda-forge = "https://anaconda.org/conda-forge/yaqd-wright"
+
+[config]
+motor.type = "int"
+motor.default = 0
+motor.doc = "Index for the motor"
+
+baud_rate.default = 9600
+
+identifiers.default = {"off"=0, "on"=1}
