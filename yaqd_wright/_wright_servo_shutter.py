@@ -1,4 +1,4 @@
-__all__ = ["WrightStepperBox"]
+__all__ = ["WrightServoShutter"]
 
 import asyncio
 from typing import Dict
