@@ -42,17 +42,18 @@ class WrightServoShutter(IsDiscrete, HasPosition, UsesUart, UsesSerial):
 
     async def update_state(self):
         while True:
-            line = await self._serial_port.awrite_then_readline(f"G{self._motornum}\n".encode())
+            #line = await self._serial_port.awrite_then_readline(f"G{self._motornum}\n".encode())
             #self._busy = line[0:1] != b"R"
-            self._busy=False
-            self._state["position"]=float(int(line[0:1]))
+            #self._busy=False
+            #self._state["position"]=float(int(line[0:1]))
             #if self._reset_on_not_busy and not self._busy:
             #    self._busy = True
             #    self._reset_on_not_busy = False
             if (self._state["destination"] != self._state["position"]):
+                #self.logger.info("dest not equal to pos")
                 self._serial_port.write(f"M{self._motornum}\n".encode())
-
-            await asyncio.sleep(0.25)
+                self._state["position"]=self._state["destination"]
+            await asyncio.sleep(0.1)
             #if self._busy:
             #    self._state["position_identifier"] = None
             #else:
