@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [2022.8.0]
+
 ### Changed
 - Unified FuYu linear and filter wheel into one daemon, wright-stepper-box
 - Fixed problems with multiple setting of stepper box daemons
@@ -60,7 +62,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ### Added
 - initial release
 
-[Unreleased]: https://github.com/wright-group/yaqd-wright/compare/v2022.3.0...HEAD
+[Unreleased]: https://github.com/wright-group/yaqd-wright/compare/v2022.8.0...HEAD
+[2022.8.0]: https://github.com/wright-group/yaqd-wright/compare/v2022.3.0...v2022.8.0
 [2022.3.0]: https://github.com/wright-group/yaqd-wright/compare/v2022.2.0...v2022.3.0
 [2022.2.0]: https://github.com/wright-group/yaqd-wright/compare/v2021.4.0...v2022.2.0
 [2021.4.0]: https://github.com/wright-group/yaqd-wright/compare/v2021.1.0...v2021.4.0
