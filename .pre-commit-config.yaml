@@ -1,3 +1,5 @@
+ci:
+  autoupdate_schedule: "monthly"
 repos:
   - repo: https://github.com/psf/black
     rev: 23.9.1 # Replace by any tag/version: https://github.com/psf/black/tags
@@ -17,7 +19,7 @@ repos:
         - id: yaq-traits-check
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.5.0
     hooks:
       - id: trailing-whitespace
       - id: no-commit-to-branch
