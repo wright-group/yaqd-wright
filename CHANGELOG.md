@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 - Support for servo shutter control box
+- Support for Arduino digital writes 0-15
 
 ## [2022.8.0]
 
