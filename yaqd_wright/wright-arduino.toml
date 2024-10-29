@@ -34,8 +34,19 @@ doc = "Get the currently active pin for digital control."
 response = "int"
 
 [messages.set_active_pin]
-doc = "Set the chunk count."
+doc = "Set the active pin."
 request = [{"name"="active_pin", "type"="int"}]
+
+[messages.reset]
+setter = "reset"
+control_kind = "normal"
+record_kind = "metadata"
+
+[messages.get_total_position]
+getter = "get_total_position"
+control_kind = "normal"
+record_kind = "metadata"
+response= {type="array", "items"="int"}
 
 
 [properties]
@@ -46,4 +57,8 @@ setter = "set_active_pin"
 control_kind = "normal"
 record_kind = "metadata"
 type = "int"
+default = 0
+
+
+
 

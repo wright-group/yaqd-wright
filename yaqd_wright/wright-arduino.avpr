@@ -138,6 +138,16 @@
             "request": [],
             "response": "string"
         },
+        "get_total_position": {
+            "control_kind": "normal",
+            "getter": "get_total_position",
+            "record_kind": "metadata",
+            "request": [],
+            "response": {
+                "items": "int",
+                "type": "array"
+            }
+        },
         "get_units": {
             "doc": "Get units of daemon. These units apply to the position and destination properties.",
             "origin": "has-position",
@@ -159,11 +169,18 @@
                 ]
             }
         },
+        "reset": {
+            "control_kind": "normal",
+            "record_kind": "metadata",
+            "request": [],
+            "response": "null",
+            "setter": "reset"
+        },
         "set_active_pin": {
-            "doc": "Set the chunk count.",
+            "doc": "Set the active pin.",
             "request": [
                 {
-                    "name": "activepin",
+                    "name": "active_pin",
                     "type": "int"
                 }
             ],
@@ -180,7 +197,6 @@
             ],
             "response": "null"
         },
-
         "shutdown": {
             "doc": "Cleanly shutdown (or restart) daemon.",
             "origin": "is-daemon",
