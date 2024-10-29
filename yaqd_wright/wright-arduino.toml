@@ -1,0 +1,49 @@
+protocol = "wright-arduino"
+doc = """Expose an arduino as a yaq daemon.
+          The arduino is currently configured for simple digital Writes to DO pins, and
+          cannot be used to access DO higher than 16 (0x0F)."""
+
+traits = ["is-daemon", "uses-uart", "has-position"]
+
+[links]
+source = "https://github.com/wright-group/yaqd-wright"
+bugtracker = "https://github.com/wright-group/yaqd-wright/issues"
+
+[installation]
+PyPI = "https://pypi.org/project/yaqd-wright"
+conda-forge = "https://anaconda.org/conda-forge/yaqd-wright"
+
+[config]
+default_active_pin.type = "int"
+default_active_pin.default = 0
+default_active_pin.doc = "default pin for digital control"
+
+baud_rate.default = 9600
+
+[state]
+
+[state.active_pin]
+doc = "Active pin for digital control."
+type = "int"
+default = 0
+
+[messages]
+
+[messages.get_active_pin]
+doc = "Get the currently active pin for digital control."
+response = "int"
+
+[messages.set_active_pin]
+doc = "Set the chunk count."
+request = [{"name"="active_pin", "type"="int"}]
+
+
+[properties]
+
+[properties.active_pin]
+getter = "get_active_pin"
+setter = "set_active_pin"
+control_kind = "normal"
+record_kind = "metadata"
+type = "int"
+
