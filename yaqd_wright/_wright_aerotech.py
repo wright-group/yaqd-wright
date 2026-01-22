@@ -24,7 +24,7 @@ class WrightAerotech(UsesUart, IsHomeable, ContinuousHardware):
         self._serial_port.write(message.encode())
 
     def home(self):
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
         loop.create_task(self._home())
 
     async def _home(self):
