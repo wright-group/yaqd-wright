@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Changed
+- updated asyncio commands to avoid deprecated ones (`get_event_loop`)
+
 ## [2022.8.0]
 
 ### Changed
