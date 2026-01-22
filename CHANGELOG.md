@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ## [Unreleased]
 
 ### Changed
+- roll python version support to current (3.11--14)
 - updated asyncio commands to avoid deprecated ones (`get_event_loop`)
 
 ## [2022.8.0]
